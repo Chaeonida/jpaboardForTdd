@@ -28,5 +28,26 @@ public class PostServiceTest {
         //then(등록이 되어야한다.)
         assertThat(savedPost.getContent(), is("아무내용"));
     }
+
+    @Test
+    @DisplayName("게시글 수정 테스트 ")
+    void updatePostTest() {
+        //given(저장 되어 있는 Post 가 주어졌을때 )
+        User user = User.builder().age(14).name("ChaeWon").hobby("drawing").build();
+        Post post = Post.builder().content("아무내용").title("제목").user(user).build();
+        PostRepository postRepository = Mockito.mock(PostRepository.class);
+        Mockito.when(postRepository.save(post)).thenReturn(post);
+        PostService postService = new PostService(postRepository);
+        Post savedPost = postService.save(post);
+
+        //when(게시글을 수정 하면)
+        Post updatedPost = postService.update(savedPost.getId(),"제목수정","내용수정");
+
+        //then(게시글이 수정 되어야 한다.)
+        assertThat(updatedPost.getContent(), is("내용수정"));
+        assertThat(updatedPost.getTitle(), is("제목수정"));
+
+    }
+
 }
 
