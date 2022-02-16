@@ -2,9 +2,11 @@ package com.tdd.jpaboardfortdd.service;
 
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.User;
+import com.tdd.jpaboardfortdd.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.*;
 
@@ -18,6 +20,7 @@ public class PostServiceTest {
         Post post = Post.builder().content("아무내용").title("제목").user(user).build();
         PostRepository postRepository = Mockito.mock(PostRepository.class);
         Mockito.when(postRepository.save(post)).thenReturn(post);
+        PostService postService = new PostService(postRepository);
 
         //when(user가 게시글을 작성하면)
         Post savedPost = postService.save(post);
