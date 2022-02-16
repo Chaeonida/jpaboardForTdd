@@ -45,9 +45,4 @@ public class Post {
 		user.getPosts().add(this);
 	}
 	
-	public void postUpdate(String title, String content) {
-		this.title = title;
-		this.content = content;
-	}
-	
 }
