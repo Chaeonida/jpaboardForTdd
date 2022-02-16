@@ -28,4 +28,8 @@ public class PostService {
 
 
     }
+
+    public Post find(Long id) throws NotFoundException {
+        return postRepository.findById(id).orElseThrow(NotFoundException::new);
+    }
 }

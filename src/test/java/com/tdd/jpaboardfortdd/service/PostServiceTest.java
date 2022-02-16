@@ -10,6 +10,7 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PostServiceTest {
 
@@ -64,6 +65,7 @@ public class PostServiceTest {
 
         //then(게시글이 조회 되어야 한다.)
         assertThat(findPost.getId(), is(post.getId()));
+        assertThrows(ChangeSetPersister.NotFoundException.class,()-> postService.find(2L));
 
     }
 
