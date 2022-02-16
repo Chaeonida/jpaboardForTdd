@@ -15,34 +15,39 @@ import java.util.Objects;
 @NoArgsConstructor
 @Setter
 public class Post {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	
-	private String title;
-	
-	@Lob
-	private String content;
-	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	private User user;
-	
-	@Builder
-	public Post(String title, String content, User user) {
-		this.title = title;
-		this.content = content;
-		setUser(user);
-	}
-	
-	public void setUser(User user) {
-		if(Objects.nonNull(this.user)) {
-			this.user.getPosts().remove(this);
-		}
-		
-		this.user = user;
-		user.getPosts().add(this);
-	}
-	
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    private String title;
+
+    @Lob
+    private String content;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    @Builder
+    public Post(String title, String content, User user) {
+        this.title = title;
+        this.content = content;
+        setUser(user);
+    }
+
+    public void setUser(User user) {
+        if (Objects.nonNull(this.user)) {
+            this.user.getPosts().remove(this);
+        }
+
+        this.user = user;
+        user.getPosts().add(this);
+    }
+
+    public void updatePost(String title, String content){
+        this.content = content;
+        this.title = title;
+    }
+
 }
