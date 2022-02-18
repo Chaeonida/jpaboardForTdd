@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.data.crossstore.ChangeSetPersister;
 
+import java.util.Optional;
+
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -65,7 +67,7 @@ public class PostServiceTest {
 
         //then(게시글이 조회 되어야 한다.)
         assertThat(findPost.getId(), is(post.getId()));
-        assertThrows(ChangeSetPersister.NotFoundException.class,()-> postService.find(2L));
+        assertThrows(IllegalArgumentException.class,()-> postService.find(2L));
 
     }
 
