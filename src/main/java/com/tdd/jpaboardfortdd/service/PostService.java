@@ -28,4 +28,11 @@ public class PostService {
     public Post find(Long id)  {
         return postRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
+
+    @Transactional
+    public Long delete(Long id) {
+         postRepository.deleteById(id);
+
+        return id;
+    }
 }
