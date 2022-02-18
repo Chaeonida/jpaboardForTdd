@@ -87,5 +87,19 @@ public class PostServiceTest {
 
     }
 
+    @Test
+    @DisplayName("게시글 삭제 테스트 ")
+    void deletePostTest() {
+        //given(저장 되어 있는 Post 가 주어졌을때 )
+
+        //when(게시글을 삭제 하면)
+        Mockito.when(postRepository.findById(2L)).thenReturn(Optional.of(null));
+        Long deletedPostId = postService.delete(post.getId());
+
+        //then(게시글이 삭제 되어야 한다.)
+        assertThat(deletedPostId, is(post.getId()));
+
+    }
+
 }
 
