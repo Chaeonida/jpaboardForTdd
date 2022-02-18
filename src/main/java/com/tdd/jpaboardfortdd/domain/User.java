@@ -26,12 +26,13 @@ public class User{
 	
 	@OneToMany(mappedBy = "user")
 	private List<Post> posts = new ArrayList<>();
-	
+
+
 	@Builder
-	public User(String name, int age, String hobby) {
-		this.name = name;
-		this.age = age;
-		this.hobby = hobby;
-	}
-	
+    public User(Long id, String name, String hobby, int age) {
+        this.id = id;
+        this.name = name;
+        this.hobby = hobby;
+        this.age = age;
+    }
 }
