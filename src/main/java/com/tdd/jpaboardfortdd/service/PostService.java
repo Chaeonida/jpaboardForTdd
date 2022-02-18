@@ -1,7 +1,10 @@
 package com.tdd.jpaboardfortdd.service;
 
 import com.tdd.jpaboardfortdd.domain.Post;
+import com.tdd.jpaboardfortdd.domain.User;
+import com.tdd.jpaboardfortdd.dto.PostCreateRequest;
 import com.tdd.jpaboardfortdd.repository.PostRepository;
+import com.tdd.jpaboardfortdd.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public Post save(Post post) {

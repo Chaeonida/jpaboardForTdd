@@ -1,9 +1,6 @@
 package com.tdd.jpaboardfortdd.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,6 +29,13 @@ public class Post {
     @Builder
     public Post(Long id, String title, String content, User user) {
         this.id = id;
+        this.title = title;
+        this.content = content;
+        this.user = user;
+    }
+
+    @Builder
+    public Post(String title, String content, User user) {
         this.title = title;
         this.content = content;
         this.user = user;

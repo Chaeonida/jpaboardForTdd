@@ -3,7 +3,6 @@ package com.tdd.jpaboardfortdd.service;
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.User;
 import com.tdd.jpaboardfortdd.repository.PostRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,8 +14,8 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 
 import java.util.Optional;
 
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,7 +40,7 @@ public class PostServiceTest {
         Post savedPost = postService.save(post);
 
         //then(등록이 되어야한다.)
-        assertThat(savedPost.getContent(), is("아무내용"));
+        assertThat(savedPost.getId(), is(1L));
     }
 
     @Test
