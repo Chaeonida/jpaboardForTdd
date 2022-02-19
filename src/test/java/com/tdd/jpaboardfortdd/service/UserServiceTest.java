@@ -49,10 +49,10 @@ public class UserServiceTest {
     void updateUserTest() {
         //given(userRequest가 주어졌을때)
         UserUpdateRequest userUpdateRequest = UserUpdateRequest.builder().age(14).name("ChaeWonida").hobby("Movie").build();
-        Mockito.when(userRepository.findById(user.getId())).thenReturn(java.util.Optional.of(user));
+        Mockito.when(userRepository.findById(any())).thenReturn(java.util.Optional.of(user));
 
         //when(user가 회원가입을 하면)
-        Long updatedUserId = userService.update(int age, String name, String hobby);
+        Long updatedUserId = userService.update(userUpdateRequest);
 
         //then(등록이 되어야한다.)
         assertThat(updatedUserId, is(1L));
@@ -62,7 +62,7 @@ public class UserServiceTest {
     @DisplayName("유저 조회 테스트 ")
     void getUserTest() {
         //given(저장 되어 있는 Post 가 주어졌을때 )
-        Mockito.when(userRepository.findById(user.getId())).thenReturn(java.util.Optional.of(user));
+        Mockito.when(userRepository.findById(any())).thenReturn(java.util.Optional.of(user));
 
         //when(게시글을 조회 하면)
         UserDetaioDto userDetaioDto = userService.get(user.getId());
@@ -75,7 +75,7 @@ public class UserServiceTest {
     @DisplayName("유저 조회 실패 테스트 ")
     void findPostFailTest() {
         //given(저장 되어 있는 Post 가 주어졌을때 )
-        Mockito.when(userRepository.findById(user.getId())).thenReturn(java.util.Optional.of(null));
+        Mockito.when(userRepository.findById(any())).thenReturn(java.util.Optional.of(null));
 
         //when(게시글을 조회 하면)
         UserDetaioDto userDetaioDto = userService.get(user.getId());
