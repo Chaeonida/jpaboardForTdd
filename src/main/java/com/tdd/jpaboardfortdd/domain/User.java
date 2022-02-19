@@ -35,4 +35,10 @@ public class User{
         this.hobby = hobby;
         this.age = age;
     }
+
+    public void update(String name, String hobby, int age) {
+	    this.name = name;
+	    this.age = age;
+        this.hobby = hobby;
+    }
 }

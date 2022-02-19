@@ -3,7 +3,8 @@ package com.tdd.jpaboardfortdd.service;
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.User;
 import com.tdd.jpaboardfortdd.dto.UserCreateRequest;
-import com.tdd.jpaboardfortdd.repository.PostRepository;
+import com.tdd.jpaboardfortdd.dto.UserDetailResponse;
+import com.tdd.jpaboardfortdd.dto.UserUpdateRequest;
 import com.tdd.jpaboardfortdd.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -28,7 +30,6 @@ public class UserServiceTest {
     private UserService userService;
 
     static User user = User.builder().id(1L).age(14).name("ChaeWon").hobby("drawing").build();
-    static Post post = Post.builder().id(1L).content("아무내용").title("제목").user(user).build();
 
     @Test
     @DisplayName("유저 등록 테스트 ")
@@ -52,7 +53,7 @@ public class UserServiceTest {
         Mockito.when(userRepository.findById(any())).thenReturn(java.util.Optional.of(user));
 
         //when(user가 회원가입을 하면)
-        Long updatedUserId = userService.update(userUpdateRequest);
+        Long updatedUserId = userService.update(userUpdateRequest, user.getId());
 
         //then(등록이 되어야한다.)
         assertThat(updatedUserId, is(1L));
@@ -61,38 +62,39 @@ public class UserServiceTest {
     @Test
     @DisplayName("유저 조회 테스트 ")
     void getUserTest() {
-        //given(저장 되어 있는 Post 가 주어졌을때 )
+        //given(저장 되어 있는 user 가 주어졌을때 )
         Mockito.when(userRepository.findById(any())).thenReturn(java.util.Optional.of(user));
 
-        //when(게시글을 조회 하면)
-        UserDetaioDto userDetaioDto = userService.get(user.getId());
+        //when(유저를 조회 하면)
+        UserDetailResponse userDetailResponse = userService.get(user.getId());
 
-        //then(게시글이 조회 되어야 한다.)
-        assertThat(userDetaioDto.getId(), is(user.getId()));
+        //then(유저가 조회 되어야 한다.)
+        assertThat(userDetailResponse.getId(), is(user.getId()));
     }
 
     @Test
     @DisplayName("유저 조회 실패 테스트 ")
-    void findPostFailTest() {
-        //given(저장 되어 있는 Post 가 주어졌을때 )
-        Mockito.when(userRepository.findById(any())).thenReturn(java.util.Optional.of(null));
+    void findUserFailTest() {
+        //given(저장 되어 있는 User 가 주어졌을때 )
+        Mockito.when(userRepository.findById(any())).thenThrow(new IllegalArgumentException());
 
-        //when(게시글을 조회 하면)
-        UserDetaioDto userDetaioDto = userService.get(user.getId());
+        //when(저장되어있지 않은 id로 유저를 조회 하면)
 
-        //then(게시글이 조회 되어야 한다.)
-        assertThat(userDetaioDto.getId(), is(null));
+        //then(예외가 터져야 한다.)
+        assertThrows(IllegalArgumentException.class, () -> userService.get(2L));
     }
 
     @Test
     @DisplayName("유저 삭제 테스트 ")
     void deletePostTest() {
-        //given(저장 되어 있는 Post 가 주어졌을때 )
+        //given(저장 되어 있는 User 가 주어졌을때 )
+        Mockito.when(userRepository.findById(any())).thenReturn(java.util.Optional.of(user));
+        doNothing().when(userRepository).delete(any());
 
-        //when(게시글을 삭제 하면)
-        Long deletedUserId = userService.delete(post.getId());
+        //when(유저를 삭제 하면)
+        Long deletedUserId = userService.delete(user.getId());
 
-        //then(게시글이 삭제 되어야 한다.)
+        //then(유저는 삭제 되어야 한다.)
         assertThat(deletedUserId, is(user.getId()));
     }
 }
