@@ -2,6 +2,7 @@ package com.tdd.jpaboardfortdd.service;
 
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.User;
+import com.tdd.jpaboardfortdd.dto.UserCreateRequest;
 import com.tdd.jpaboardfortdd.repository.PostRepository;
 import com.tdd.jpaboardfortdd.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -33,10 +35,10 @@ public class UserServiceTest {
     void createUserTest() {
         //given(userRequest가 주어졌을때)
         UserCreateRequest userCreateRequest = UserCreateRequest.builder().age(14).name("ChaeWon").hobby("drawing").build();
-        Mockito.when(userRepository.save(user)).thenReturn(user);
+        Mockito.when(userRepository.save(any())).thenReturn(user);
 
         //when(user가 회원가입을 하면)
-        Long savedUserId = userService.save(user);
+        Long savedUserId = userService.save(userCreateRequest);
 
         //then(등록이 되어야한다.)
         assertThat(savedUserId, is(1L));
@@ -44,7 +46,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("유저 수정 테스트 ")
-    void createUserTest() {
+    void updateUserTest() {
         //given(userRequest가 주어졌을때)
         UserUpdateRequest userUpdateRequest = UserUpdateRequest.builder().age(14).name("ChaeWonida").hobby("Movie").build();
         Mockito.when(userRepository.findById(user.getId())).thenReturn(java.util.Optional.of(user));
