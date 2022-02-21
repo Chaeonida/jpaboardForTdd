@@ -77,6 +77,23 @@ public class PostServiceTest {
     }
 
     @Test
+    @DisplayName("게시글 수정 실패 테스트 ")
+    void updatePostFailTest() {
+        //given(저장 되어 있는 Post 가 주어졌을때 )
+        Mockito.when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
+        PostUpdateRequest postUpdateRequest = PostUpdateRequest.builder()
+                .content("내용수정")
+                .title("제목수정")
+                .userId(2L)
+                .build();
+
+        //when(게시글을 수정 하면)
+
+        //then(작성한 user와 다를경우 예외가 나타난다)
+        assertThrows(IllegalArgumentException.class, () -> postService.update(postUpdateRequest,post.getId()));
+    }
+
+    @Test
     @DisplayName("게시글 조회 테스트 ")
     void findPostTest() {
         //given(저장 되어 있는 Post 가 주어졌을때 )
