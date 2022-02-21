@@ -111,10 +111,9 @@ public class PostServiceTest {
     @DisplayName("게시글 조회 실패 테스트 ")
     void findPostFailTest() {
         //given(저장 되어 있는 Post 가 주어졌을때 )
-        Mockito.when(postRepository.findById(any())).thenReturn(Optional.empty());
 
         //when(게시글을 조회 하면)
-        Mockito.when(postRepository.findById(2L)).thenThrow(new IllegalArgumentException());
+        Mockito.when(postRepository.findById(any())).thenReturn(Optional.empty());
 
         //then(게시글이 조회 되어야 한다.)
         assertThrows(IllegalArgumentException.class, () -> postService.find(2L));

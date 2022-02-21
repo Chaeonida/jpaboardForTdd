@@ -14,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -76,7 +78,7 @@ public class UserServiceTest {
     @DisplayName("유저 조회 실패 테스트 ")
     void findUserFailTest() {
         //given(저장 되어 있는 User 가 주어졌을때 )
-        Mockito.when(userRepository.findById(any())).thenThrow(new IllegalArgumentException());
+        Mockito.when(userRepository.findById(any())).thenReturn(Optional.empty());
 
         //when(저장되어있지 않은 id로 유저를 조회 하면)
 

@@ -29,14 +29,14 @@ public class UserService {
 
     @Transactional
     public Long update(UserUpdateRequest userUpdateRequest,Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(IllegalAccessError::new);
+        User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
         user.update(userUpdateRequest.getName(), userUpdateRequest.getHobby(), userUpdateRequest.getAge());
 
         return user.getId();
     }
 
     public UserDetailResponse get(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(IllegalAccessError::new);
+        User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
 
         return UserDetailResponse.builder()
                 .id(user.getId())
