@@ -12,10 +12,12 @@ import javax.persistence.Lob;
 public class PostCreateRequest {
     private String title;
     private String content;
+    private Long userId;
 
     @Builder
-    public PostCreateRequest(String title, String content) {
+    public PostCreateRequest(String title, String content, Long userId) {
         this.title = title;
         this.content = content;
+        this.userId = userId;
     }
 }

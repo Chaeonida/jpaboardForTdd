@@ -5,6 +5,7 @@ import com.tdd.jpaboardfortdd.domain.User;
 import com.tdd.jpaboardfortdd.dto.PostCreateRequest;
 import com.tdd.jpaboardfortdd.dto.PostUpdateRequest;
 import com.tdd.jpaboardfortdd.repository.PostRepository;
+import com.tdd.jpaboardfortdd.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,12 +20,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 
 @ExtendWith(MockitoExtension.class)
 public class PostServiceTest {
 
     @Mock
     private PostRepository postRepository;
+    @Mock
+    private UserRepository userRepository;
 
     @InjectMocks
     private PostService postService;
@@ -36,13 +40,21 @@ public class PostServiceTest {
     @DisplayName("게시글 등록 테스트 ")
     void createPostTest() {
         //given(user,Post 가 주어졌을때 )
+        Mockito.when(userRepository.findById(any())).thenReturn(Optional.of(user));
         Mockito.when(postRepository.save(any())).thenReturn(post);
 
+        PostCreateRequest postCreateRequest = PostCreateRequest.builder()
+                .title("제목")
+                .content("아무내용")
+                .userId(1L)
+                .build();
+
         //when(user가 게시글을 작성하면)
-        Post savedPost = postService.save(PostCreateRequest);
+        Post savedPost = postService.save(postCreateRequest);
 
         //then(등록이 되어야한다.)
         assertThat(savedPost.getId(), is(1L));
+        assertThat(savedPost.getUser().getId(), is(1L));
     }
 
     @Test
@@ -50,9 +62,14 @@ public class PostServiceTest {
     void updatePostTest() {
         //given(저장 되어 있는 Post 가 주어졌을때 )
         Mockito.when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
+        PostUpdateRequest postUpdateRequest = PostUpdateRequest.builder()
+                .content("내용수정")
+                .title("제목수정")
+                .userId(1L)
+                .build();
 
         //when(게시글을 수정 하면)
-        Post updatedPost = postService.update(PostUpdateRequest);
+        Post updatedPost = postService.update(postUpdateRequest,post.getId());
 
         //then(게시글이 수정 되어야 한다.)
         assertThat(updatedPost.getContent(), is("내용수정"));

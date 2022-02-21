@@ -10,10 +10,12 @@ import lombok.NoArgsConstructor;
 public class PostUpdateRequest {
     private String title;
     private String content;
+    private Long userId;
 
     @Builder
-    public PostUpdateRequest(String title, String content) {
+    public PostUpdateRequest(String title, String content, Long userId) {
         this.title = title;
         this.content = content;
+        this.userId = userId;
     }
 }

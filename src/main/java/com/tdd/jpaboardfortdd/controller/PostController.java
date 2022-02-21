@@ -15,16 +15,16 @@ public class PostController {
 
     @PostMapping("/posts")
     public ResponseEntity<Long> create(
-            @RequestBody Post post
+            @RequestBody PostCreateRequest postCreateRequest
     ) {
-        return ResponseEntity.ok(postService.save(post).getId());
+        return ResponseEntity.ok(postService.save(postCreateRequest).getId());
     }
 
     @PutMapping("/posts/{id}")
     public ResponseEntity<Long> update(
             @PathVariable("id") Long postId, @RequestBody PostUpdateRequest postUpdateRequest
     ) {
-        return ResponseEntity.ok(postService.update(postId, postUpdateRequest.getTitle(), postUpdateRequest.getContent()).getId());
+        return ResponseEntity.ok(postService.update(postUpdateRequest,postId).getId());
     }
 
     @GetMapping("/posts/{id}")
