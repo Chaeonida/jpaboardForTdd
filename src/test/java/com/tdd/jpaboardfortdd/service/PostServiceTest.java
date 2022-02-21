@@ -3,6 +3,7 @@ package com.tdd.jpaboardfortdd.service;
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.User;
 import com.tdd.jpaboardfortdd.dto.PostCreateRequest;
+import com.tdd.jpaboardfortdd.dto.PostDeleteRequest;
 import com.tdd.jpaboardfortdd.dto.PostUpdateRequest;
 import com.tdd.jpaboardfortdd.repository.PostRepository;
 import com.tdd.jpaboardfortdd.repository.UserRepository;
@@ -123,9 +124,12 @@ public class PostServiceTest {
     @DisplayName("게시글 삭제 테스트 ")
     void deletePostTest() {
         //given(저장 되어 있는 Post 가 주어졌을때 )
+        PostDeleteRequest postDeleteRequest = PostDeleteRequest.builder()
+                .userId(1L)
+                .build();
 
         //when(게시글을 삭제 하면)
-        Long deletedPostId = postService.delete(post.getId());
+        Long deletedPostId = postService.delete(post.getId(), postDeleteRequest);
 
         //then(게시글이 삭제 되어야 한다.)
         assertThat(deletedPostId, is(post.getId()));

@@ -2,7 +2,9 @@ package com.tdd.jpaboardfortdd.controller;
 
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.dto.PostCreateRequest;
+import com.tdd.jpaboardfortdd.dto.PostDeleteRequest;
 import com.tdd.jpaboardfortdd.dto.PostUpdateRequest;
+import com.tdd.jpaboardfortdd.dto.UserUpdateRequest;
 import com.tdd.jpaboardfortdd.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,7 @@ public class PostController {
     public ResponseEntity<Long> update(
             @PathVariable("id") Long postId, @RequestBody PostUpdateRequest postUpdateRequest
     ) {
-        return ResponseEntity.ok(postService.update(postUpdateRequest,postId).getId());
+        return ResponseEntity.ok(postService.update(postUpdateRequest, postId).getId());
     }
 
     @GetMapping("/posts/{id}")
@@ -36,11 +38,8 @@ public class PostController {
 
     @DeleteMapping("/posts/{id}")
     public ResponseEntity<Long> delete(
-            @PathVariable("id") Long postId
+            @PathVariable("id") Long postId, @RequestBody PostDeleteRequest postDeleteRequest
     ) {
-        return ResponseEntity.ok(postService.delete(postId));
+        return ResponseEntity.ok(postService.delete(postId, postDeleteRequest));
     }
-
-
-
 }

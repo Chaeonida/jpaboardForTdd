@@ -1,6 +1,5 @@
 package com.tdd.jpaboardfortdd.service;
 
-import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.User;
 import com.tdd.jpaboardfortdd.dto.UserCreateRequest;
 import com.tdd.jpaboardfortdd.dto.UserDetailResponse;

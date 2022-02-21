@@ -3,6 +3,7 @@ package com.tdd.jpaboardfortdd.service;
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.User;
 import com.tdd.jpaboardfortdd.dto.PostCreateRequest;
+import com.tdd.jpaboardfortdd.dto.PostDeleteRequest;
 import com.tdd.jpaboardfortdd.dto.PostUpdateRequest;
 import com.tdd.jpaboardfortdd.repository.PostRepository;
 import com.tdd.jpaboardfortdd.repository.UserRepository;
@@ -49,9 +50,13 @@ public class PostService {
     }
 
     @Transactional
-    public Long delete(Long id) {
-        postRepository.deleteById(id);
-
+    public Long delete(Long id, PostDeleteRequest postDeleteRequest) {
+        if (!userValid(
+                id,
+                postDeleteRequest.getUserId()
+        )) {
+            postRepository.deleteById(id);
+        }
         return id;
     }
 

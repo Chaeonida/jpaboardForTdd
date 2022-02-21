@@ -1,10 +1,7 @@
 package com.tdd.jpaboardfortdd.controller;
 
 import com.tdd.jpaboardfortdd.domain.Post;
-import com.tdd.jpaboardfortdd.dto.PostUpdateRequest;
-import com.tdd.jpaboardfortdd.dto.UserCreateRequest;
-import com.tdd.jpaboardfortdd.dto.UserDetailResponse;
-import com.tdd.jpaboardfortdd.dto.UserUpdateRequest;
+import com.tdd.jpaboardfortdd.dto.*;
 import com.tdd.jpaboardfortdd.service.PostService;
 import com.tdd.jpaboardfortdd.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +25,7 @@ public class UserController {
     public ResponseEntity<Long> updateUser(
             @PathVariable("id") Long userId, @RequestBody UserUpdateRequest userUpdateRequest
     ) {
-        return ResponseEntity.ok(userService.update(userUpdateRequest,userId));
+        return ResponseEntity.ok(userService.update(userUpdateRequest, userId));
     }
 
     @GetMapping("/{id}")
