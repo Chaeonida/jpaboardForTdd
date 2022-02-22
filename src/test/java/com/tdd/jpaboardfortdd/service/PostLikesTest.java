@@ -32,8 +32,6 @@ public class PostLikesTest {
     @Mock
     private PostRepository postRepository;
     @Mock
-    private CommentRepository commentRepository;
-    @Mock
     private UserRepository userRepository;
     @Mock
     private PostLikesRepository postLikesRepository;
@@ -43,9 +41,7 @@ public class PostLikesTest {
 
     static User user = User.builder().id(1L).age(14).name("ChaeWon").hobby("drawing").build();
     static Post post = Post.builder().id(1L).content("아무내용").title("제목").user(user).build();
-    static Comment comment = Comment.builder().id(1L).content("댓글내용").post(post).user(user).build();
     static PostLikes postLike = PostLikes.builder().id(1L).post(post).user(user).build();
-
 
     @Test
     @DisplayName("게시판좋아요 등록 테스트 ")
@@ -74,22 +70,22 @@ public class PostLikesTest {
         postLikes.add(postLike);
 
         Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
-        Mockito.when(userRepository.findById(any())).thenReturn(Optional.of(user));
-        Mockito.when(postLikesRepository.findByPost(any())).thenReturn(postLikes);
+        Mockito.when(postLikesRepository.getByPost(any())).thenReturn(postLikes);
 
         //when(좋아요를 조회하면)
         List<PostLikesResponse> postLikesResponses = postLikesService.get(post.getId());
 
         //then(조회가 되어야한다.)
-        assertThat(commentListResponseList.size(), is(1));
+        assertThat(postLikesResponses.size(), is(1));
     }
 
     @Test
     @DisplayName("게시판좋아요 삭제 테스트 ")
     void deleteCommentTest() {
         //given(Post 와 PostLike가 주어졌을때 )
-        Mockito.when(postLikesRepository.findById(any())).thenReturn(Optional.of(postLike));
-        doNothing().when(postLikesRepository).delete(any());
+        Mockito.when(userRepository.findById(any())).thenReturn(Optional.of(user));
+        Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
+        Mockito.when(postLikesRepository.deleteByUserAndPost(any(),any())).thenReturn(1L);
 
         //when(user가 좋아요를 삭제하면)
         PostLikesDeleteRequest postLikesDeleteRequest = PostLikesDeleteRequest.builder()

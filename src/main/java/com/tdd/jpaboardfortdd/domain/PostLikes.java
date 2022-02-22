@@ -1,5 +1,6 @@
 package com.tdd.jpaboardfortdd.domain;
 
+import com.tdd.jpaboardfortdd.dto.PostLikesResponse;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,5 +39,12 @@ public class PostLikes {
                     .remove(this);
         }
         this.post = post;
+    }
+
+    public PostLikesResponse toPostLikesResponse() {
+        return PostLikesResponse.builder()
+                .userId(user.getId())
+                .postLikesId(id)
+                .build();
     }
 }
