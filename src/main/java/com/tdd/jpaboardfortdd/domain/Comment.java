@@ -1,6 +1,7 @@
 package com.tdd.jpaboardfortdd.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,6 +27,14 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    @Builder
+    public Comment(Long id, String content, User user, Post post) {
+        this.id = id;
+        this.content = content;
+        this.user = user;
+        this.post = post;
+    }
 
     public void setRoutinePost(Post post) {
         if (Objects.nonNull(this.post)) {
