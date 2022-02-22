@@ -96,7 +96,7 @@ public class CommentTest {
                 .userId(1L)
                 .build();
 
-       Comment updatedComment = commentService.update(commentUpdateRequest);
+       Comment updatedComment = commentService.update(commentUpdateRequest,1L);
 
         //then(수정 되어야한다.)
         assertThat(updatedComment.getId(), is(1L));
@@ -116,7 +116,7 @@ public class CommentTest {
                 .build();
 
         //then(댓글 작성자와 다를경우 예외가 나타난다.)
-        assertThrows(IllegalArgumentException.class, () -> commentService.update(commentUpdateRequest));
+        assertThrows(IllegalArgumentException.class, () -> commentService.update(commentUpdateRequest,1L));
     }
 
     @Test
