@@ -44,16 +44,16 @@ public class PostLikesTest {
     static User user = User.builder().id(1L).age(14).name("ChaeWon").hobby("drawing").build();
     static Post post = Post.builder().id(1L).content("아무내용").title("제목").user(user).build();
     static Comment comment = Comment.builder().id(1L).content("댓글내용").post(post).user(user).build();
-    static PostLikes postLikes = PostLikes.builder().id(1L).post(post).user(user).build();
+    static PostLikes postLike = PostLikes.builder().id(1L).post(post).user(user).build();
 
 
     @Test
     @DisplayName("게시판좋아요 등록 테스트 ")
-    void createCommentTest() {
+    void createPostLikeTest() {
         //given(user,Post 가 주어졌을때 )
         Mockito.when(userRepository.findById(any())).thenReturn(Optional.of(user));
         Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
-        Mockito.when(postLikesRepository.save(any())).thenReturn(postLikes);
+        Mockito.when(postLikesRepository.save(any())).thenReturn(postLike);
 
         PostLikesCreateRequest postLikesCreateRequest = PostLikesCreateRequest.builder().userId(1L).build();
 
@@ -64,5 +64,40 @@ public class PostLikesTest {
         assertThat(savedPostLikes.getId(), is(1L));
         assertThat(savedPostLikes.getUser().getId(), is(1L));
         assertThat(savedPostLikes.getPost().getId(), is(1L));
+    }
+
+    @Test
+    @DisplayName("게시판좋아요 조회 테스트 ")
+    void getPostLikeTest() {
+        //given(Post와 Post에 해당하는 댓글이 주어졌을때 )
+        List<PostLikes> postLikes = new ArrayList<>();
+        postLikes.add(postLike);
+
+        Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
+        Mockito.when(userRepository.findById(any())).thenReturn(Optional.of(user));
+        Mockito.when(postLikesRepository.findByPost(any())).thenReturn(postLikes);
+
+        //when(좋아요를 조회하면)
+        List<PostLikesResponse> postLikesResponses = postLikesService.get(post.getId());
+
+        //then(조회가 되어야한다.)
+        assertThat(commentListResponseList.size(), is(1));
+    }
+
+    @Test
+    @DisplayName("게시판좋아요 삭제 테스트 ")
+    void deleteCommentTest() {
+        //given(Post 와 PostLike가 주어졌을때 )
+        Mockito.when(postLikesRepository.findById(any())).thenReturn(Optional.of(postLike));
+        doNothing().when(postLikesRepository).delete(any());
+
+        //when(user가 좋아요를 삭제하면)
+        PostLikesDeleteRequest postLikesDeleteRequest = PostLikesDeleteRequest.builder()
+                .userId(1L)
+                .build();
+        Long deletedId = postLikesService.delete(postLikesDeleteRequest, 1L);
+
+        //then(좋아요가 삭제 되어야한다.)
+        assertThat(deletedId, is(1L));
     }
 }
