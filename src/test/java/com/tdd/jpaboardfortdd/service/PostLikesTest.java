@@ -6,6 +6,7 @@ import com.tdd.jpaboardfortdd.domain.PostLikes;
 import com.tdd.jpaboardfortdd.domain.User;
 import com.tdd.jpaboardfortdd.dto.*;
 import com.tdd.jpaboardfortdd.repository.CommentRepository;
+import com.tdd.jpaboardfortdd.repository.PostLikesRepository;
 import com.tdd.jpaboardfortdd.repository.PostRepository;
 import com.tdd.jpaboardfortdd.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -54,10 +55,10 @@ public class PostLikesTest {
         Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
         Mockito.when(postLikesRepository.save(any())).thenReturn(postLikes);
 
-        PostCreateRequest postCreateRequest = PostCreateRequest.userId(1L).builder().build();
+        PostLikesCreateRequest postLikesCreateRequest = PostLikesCreateRequest.builder().userId(1L).build();
 
         //when(user가 게시판에 좋아요를 누르면)
-       PostLikes savedPostLikes = postLikesService.save(postCreateRequest, post.getId());
+       PostLikes savedPostLikes = postLikesService.save(postLikesCreateRequest, post.getId());
 
         //then(등록이 되어야한다.)
         assertThat(savedPostLikes.getId(), is(1L));
