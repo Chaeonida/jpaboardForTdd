@@ -5,6 +5,7 @@ import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.User;
 import com.tdd.jpaboardfortdd.dto.CommentCreateRequest;
 import com.tdd.jpaboardfortdd.dto.CommentListResponse;
+import com.tdd.jpaboardfortdd.dto.CommentUpdateRequest;
 import com.tdd.jpaboardfortdd.dto.PostCreateRequest;
 import com.tdd.jpaboardfortdd.repository.CommentRepository;
 import com.tdd.jpaboardfortdd.repository.PostRepository;
@@ -89,8 +90,6 @@ public class CommentTest {
     @DisplayName("댓글 수정 테스트 ")
     void updateCommentTest() {
         //given(Post와 Post에 해당하는 댓글이 주어졌을때 )
-        Mockito.when(userRepository.findById(any())).thenReturn(Optional.of(user));
-        Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
         Mockito.when(commentRepository.findById(any())).thenReturn(Optional.of(comment));
 
         //when(user가 댓글을 수정하면)
@@ -110,17 +109,15 @@ public class CommentTest {
     @DisplayName("댓글 실패 테스트 ")
     void updateCommentFailTest() {
         //given(Post와 Post에 해당하는 댓글이 주어졌을때 )
-        Mockito.when(userRepository.findById(any())).thenReturn(Optional.of(user));
-        Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
         Mockito.when(commentRepository.findById(any())).thenReturn(Optional.of(comment));
 
         //when(user가 댓글을 수정하면)
         CommentUpdateRequest commentUpdateRequest = CommentUpdateRequest.builder()
                 .content("댓글수정")
-                .userId(1L)
+                .userId(2L)
                 .build();
 
         //then(댓글 작성자와 다를경우 예외가 나타난다.)
-        assertThrows(IllegalArgumentException.class, () -> commentService.update(commentUpdateRequest);
+        assertThrows(IllegalArgumentException.class, () -> commentService.update(commentUpdateRequest));
     }
 }

@@ -5,6 +5,7 @@ import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.User;
 import com.tdd.jpaboardfortdd.dto.CommentCreateRequest;
 import com.tdd.jpaboardfortdd.dto.CommentListResponse;
+import com.tdd.jpaboardfortdd.dto.CommentUpdateRequest;
 import com.tdd.jpaboardfortdd.repository.CommentRepository;
 import com.tdd.jpaboardfortdd.repository.PostRepository;
 import com.tdd.jpaboardfortdd.repository.UserRepository;
@@ -40,5 +41,21 @@ public class CommentService {
     public List<CommentListResponse> get(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(IllegalArgumentException::new);
         return commentRepository.findByPost(post).stream().map(Comment::toCommentListResponse).collect(toList());
+    }
+
+    public Comment update(CommentUpdateRequest commentUpdateRequest) {
+        Comment comment = commentRepository.findById(commentUpdateRequest.getCommentId()).orElseThrow(IllegalArgumentException::new);
+        Long userId = commentUpdateRequest.getUserId();
+        Long compareUserId = comment.getUser().getId();
+        commentWriterValid(userId,compareUserId);
+        comment.update(commentUpdateRequest.getContent());
+
+        return comment;
+    }
+
+    public void commentWriterValid(final Long userId, final Long compareUserId) {
+        if (!userId.equals(compareUserId)) {
+            throw new IllegalArgumentException();
+        }
     }
 }
