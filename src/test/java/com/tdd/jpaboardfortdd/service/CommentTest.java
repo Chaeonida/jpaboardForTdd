@@ -26,6 +26,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
 public class CommentTest {
@@ -119,5 +120,22 @@ public class CommentTest {
 
         //then(댓글 작성자와 다를경우 예외가 나타난다.)
         assertThrows(IllegalArgumentException.class, () -> commentService.update(commentUpdateRequest));
+    }
+
+    @Test
+    @DisplayName("댓글 삭제 테스트 ")
+    void deleteCommentTest() {
+        //given(Post와 Post에 해당하는 댓글이 주어졌을때 )
+        Mockito.when(commentRepository.findById(any())).thenReturn(Optional.of(comment));
+        doNothing().when(commentRepository).delete(any());
+
+        //when(user가 댓글을 삭제하면)
+        CommentDeleteRequest commentDeleteRequest = CommentDeleteRequest.builder()
+                .userId(1L)
+                .build();
+        Long deletedId = commentService.delete(commentDeleteRequest,commentId);
+
+        //then(댓글이 삭제 되어야한다.)
+        assertThat(deletedId, is(1L));
     }
 }
