@@ -3,7 +3,9 @@ package com.tdd.jpaboardfortdd.service;
 import com.tdd.jpaboardfortdd.domain.Comment;
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.User;
+import com.tdd.jpaboardfortdd.dto.CommentCreateRequest;
 import com.tdd.jpaboardfortdd.dto.PostCreateRequest;
+import com.tdd.jpaboardfortdd.repository.CommentRepository;
 import com.tdd.jpaboardfortdd.repository.PostRepository;
 import com.tdd.jpaboardfortdd.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -42,8 +44,9 @@ public class CommentTest {
         //given(user,Post 가 주어졌을때 )
         Mockito.when(userRepository.findById(any())).thenReturn(Optional.of(user));
         Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
+        Mockito.when(commentRepository.save(any())).thenReturn(comment);
 
-        CommentRequest commentRequest = CommentRequest.builder()
+        CommentCreateRequest commentRequest = CommentCreateRequest.builder()
                 .content("댓글내용")
                 .userId(1L)
                 .build();
