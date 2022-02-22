@@ -104,7 +104,7 @@ public class CommentTest {
     }
 
     @Test
-    @DisplayName("댓글 실패 테스트 ")
+    @DisplayName("댓글 수정 실패 테스트 ")
     void updateCommentFailTest() {
         //given(Post와 Post에 해당하는 댓글이 주어졌을때 )
         Mockito.when(commentRepository.findById(any())).thenReturn(Optional.of(comment));

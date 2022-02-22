@@ -44,8 +44,8 @@ public class CommentService {
         return commentRepository.findByPost(post).stream().map(Comment::toCommentListResponse).collect(toList());
     }
 
-    public Comment update(CommentUpdateRequest commentUpdateRequest) {
-        Comment comment = commentRepository.findById(commentUpdateRequest.getCommentId()).orElseThrow(IllegalArgumentException::new);
+    public Comment update(CommentUpdateRequest commentUpdateRequest,Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(IllegalArgumentException::new);
         Long userId = commentUpdateRequest.getUserId();
         Long compareUserId = comment.getUser().getId();
         commentWriterValid(userId, compareUserId);
