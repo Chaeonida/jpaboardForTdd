@@ -23,6 +23,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
@@ -84,5 +85,42 @@ public class CommentTest {
         assertThat(commentListResponseList.get(1).getContent(), is("댓글내용2"));
     }
 
+    @Test
+    @DisplayName("댓글 수정 테스트 ")
+    void updateCommentTest() {
+        //given(Post와 Post에 해당하는 댓글이 주어졌을때 )
+        Mockito.when(userRepository.findById(any())).thenReturn(Optional.of(user));
+        Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
+        Mockito.when(commentRepository.findById(any())).thenReturn(Optional.of(comment));
 
+        //when(user가 댓글을 수정하면)
+        CommentUpdateRequest commentUpdateRequest = CommentUpdateRequest.builder()
+                .content("댓글수정")
+                .userId(1L)
+                .build();
+
+       Comment updatedComment = commentService.update(commentUpdateRequest);
+
+        //then(수정 되어야한다.)
+        assertThat(updatedComment.getId(), is(1L));
+        assertThat(updatedComment.getContent(), is("댓글수정"));
+    }
+
+    @Test
+    @DisplayName("댓글 실패 테스트 ")
+    void updateCommentFailTest() {
+        //given(Post와 Post에 해당하는 댓글이 주어졌을때 )
+        Mockito.when(userRepository.findById(any())).thenReturn(Optional.of(user));
+        Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
+        Mockito.when(commentRepository.findById(any())).thenReturn(Optional.of(comment));
+
+        //when(user가 댓글을 수정하면)
+        CommentUpdateRequest commentUpdateRequest = CommentUpdateRequest.builder()
+                .content("댓글수정")
+                .userId(1L)
+                .build();
+
+        //then(댓글 작성자와 다를경우 예외가 나타난다.)
+        assertThrows(IllegalArgumentException.class, () -> commentService.update(commentUpdateRequest);
+    }
 }
