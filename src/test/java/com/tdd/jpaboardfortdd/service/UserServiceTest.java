@@ -87,7 +87,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("유저 삭제 테스트 ")
-    void deletePostTest() {
+    void deleteUserTest() {
         //given(저장 되어 있는 User 가 주어졌을때 )
         Mockito.when(userRepository.findById(any())).thenReturn(java.util.Optional.of(user));
         doNothing().when(userRepository).delete(any());

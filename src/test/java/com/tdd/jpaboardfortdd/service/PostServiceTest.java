@@ -21,7 +21,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 
 @ExtendWith(MockitoExtension.class)
 public class PostServiceTest {
@@ -70,7 +69,7 @@ public class PostServiceTest {
                 .build();
 
         //when(게시글을 수정 하면)
-        Post updatedPost = postService.update(postUpdateRequest,post.getId());
+        Post updatedPost = postService.update(postUpdateRequest, post.getId());
 
         //then(게시글이 수정 되어야 한다.)
         assertThat(updatedPost.getContent(), is("내용수정"));
@@ -91,7 +90,7 @@ public class PostServiceTest {
         //when(게시글을 수정 하면)
 
         //then(작성한 user와 다를경우 예외가 나타난다)
-        assertThrows(IllegalArgumentException.class, () -> postService.update(postUpdateRequest,post.getId()));
+        assertThrows(IllegalArgumentException.class, () -> postService.update(postUpdateRequest, post.getId()));
     }
 
     @Test

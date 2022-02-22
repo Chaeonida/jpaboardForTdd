@@ -44,7 +44,7 @@ public class CommentService {
         return commentRepository.findByPost(post).stream().map(Comment::toCommentListResponse).collect(toList());
     }
 
-    public Comment update(CommentUpdateRequest commentUpdateRequest,Long commentId) {
+    public Comment update(CommentUpdateRequest commentUpdateRequest, Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(IllegalArgumentException::new);
         Long userId = commentUpdateRequest.getUserId();
         Long compareUserId = comment.getUser().getId();
@@ -53,7 +53,6 @@ public class CommentService {
 
         return comment;
     }
-
 
     public Long delete(CommentDeleteRequest commentDeleteRequest, long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(IllegalArgumentException::new);

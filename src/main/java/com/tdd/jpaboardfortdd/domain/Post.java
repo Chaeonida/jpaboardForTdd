@@ -1,9 +1,11 @@
 package com.tdd.jpaboardfortdd.domain;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -28,7 +30,7 @@ public class Post {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
@@ -78,7 +80,7 @@ public class Post {
         return this;
     }
 
-    public void updatePost(String title, String content){
+    public void updatePost(String title, String content) {
         this.content = content;
         this.title = title;
     }

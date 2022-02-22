@@ -1,8 +1,8 @@
 package com.tdd.jpaboardfortdd.controller;
 
-import com.tdd.jpaboardfortdd.domain.Post;
-import com.tdd.jpaboardfortdd.dto.*;
-import com.tdd.jpaboardfortdd.service.PostService;
+import com.tdd.jpaboardfortdd.dto.UserCreateRequest;
+import com.tdd.jpaboardfortdd.dto.UserDetailResponse;
+import com.tdd.jpaboardfortdd.dto.UserUpdateRequest;
 import com.tdd.jpaboardfortdd.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

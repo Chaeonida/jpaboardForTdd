@@ -8,10 +8,8 @@ import com.tdd.jpaboardfortdd.dto.PostUpdateRequest;
 import com.tdd.jpaboardfortdd.repository.PostRepository;
 import com.tdd.jpaboardfortdd.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.PostUpdate;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,15 +30,11 @@ public class PostService {
     }
 
     @Transactional
-    public Post update(PostUpdateRequest postUpdateRequest, Long PostId) {
-        Post findPost = postRepository.findById(PostId).orElseThrow(IllegalArgumentException::new);
+    public Post update(PostUpdateRequest postUpdateRequest, Long postId) {
+        Post findPost = postRepository.findById(postId).orElseThrow(IllegalArgumentException::new);
+        postWriterValid(findPost.getUser().getId(), postUpdateRequest.getUserId());
+        findPost.updatePost(postUpdateRequest.getTitle(), postUpdateRequest.getContent());
 
-        if (!userValid(
-                findPost.getUser().getId(),
-                postUpdateRequest.getUserId()
-        )) {
-            findPost.updatePost(postUpdateRequest.getTitle(), postUpdateRequest.getContent());
-        }
         return findPost;
     }
 
@@ -51,19 +45,15 @@ public class PostService {
 
     @Transactional
     public Long delete(Long id, PostDeleteRequest postDeleteRequest) {
-        if (!userValid(
-                id,
-                postDeleteRequest.getUserId()
-        )) {
-            postRepository.deleteById(id);
-        }
+        postWriterValid(id, postDeleteRequest.getUserId());
+        postRepository.deleteById(id);
+
         return id;
     }
 
-    public boolean userValid(final Long userId, final Long compareUserId) {
+    public void postWriterValid(final Long userId, final Long compareUserId) {
         if (!userId.equals(compareUserId)) {
             throw new IllegalArgumentException();
         }
-        return false;
     }
 }

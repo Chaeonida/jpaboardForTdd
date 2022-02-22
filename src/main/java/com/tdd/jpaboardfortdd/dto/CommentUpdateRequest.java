@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CommentUpdateRequest { ;
+public class CommentUpdateRequest {
     private String content;
     private Long userId;
 

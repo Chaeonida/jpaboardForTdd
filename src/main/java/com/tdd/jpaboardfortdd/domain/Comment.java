@@ -45,7 +45,7 @@ public class Comment {
         this.post = post;
     }
 
-   public CommentListResponse toCommentListResponse() {
+    public CommentListResponse toCommentListResponse() {
         return CommentListResponse.builder()
                 .userId(user.getId())
                 .content(content)

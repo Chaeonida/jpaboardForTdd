@@ -1,7 +1,6 @@
 package com.tdd.jpaboardfortdd.service;
 
 import com.tdd.jpaboardfortdd.domain.User;
-import com.tdd.jpaboardfortdd.dto.PostDeleteRequest;
 import com.tdd.jpaboardfortdd.dto.UserCreateRequest;
 import com.tdd.jpaboardfortdd.dto.UserDetailResponse;
 import com.tdd.jpaboardfortdd.dto.UserUpdateRequest;
@@ -27,9 +26,8 @@ public class UserService {
         return userRepository.save(user).getId();
     }
 
-
     @Transactional
-    public Long update(UserUpdateRequest userUpdateRequest,Long userId) {
+    public Long update(UserUpdateRequest userUpdateRequest, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
         user.update(userUpdateRequest.getName(), userUpdateRequest.getHobby(), userUpdateRequest.getAge());
 

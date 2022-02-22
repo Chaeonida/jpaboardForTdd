@@ -1,11 +1,11 @@
 package com.tdd.jpaboardfortdd.service;
 
-import com.tdd.jpaboardfortdd.domain.Comment;
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.PostLikes;
 import com.tdd.jpaboardfortdd.domain.User;
-import com.tdd.jpaboardfortdd.dto.*;
-import com.tdd.jpaboardfortdd.repository.CommentRepository;
+import com.tdd.jpaboardfortdd.dto.PostLikesCreateRequest;
+import com.tdd.jpaboardfortdd.dto.PostLikesDeleteRequest;
+import com.tdd.jpaboardfortdd.dto.PostLikesResponse;
 import com.tdd.jpaboardfortdd.repository.PostLikesRepository;
 import com.tdd.jpaboardfortdd.repository.PostRepository;
 import com.tdd.jpaboardfortdd.repository.UserRepository;
@@ -23,9 +23,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
 public class PostLikesTest {
@@ -54,7 +52,7 @@ public class PostLikesTest {
         PostLikesCreateRequest postLikesCreateRequest = PostLikesCreateRequest.builder().userId(1L).build();
 
         //when(user가 게시판에 좋아요를 누르면)
-       PostLikes savedPostLikes = postLikesService.save(postLikesCreateRequest, post.getId());
+        PostLikes savedPostLikes = postLikesService.save(postLikesCreateRequest, post.getId());
 
         //then(등록이 되어야한다.)
         assertThat(savedPostLikes.getId(), is(1L));
@@ -81,11 +79,11 @@ public class PostLikesTest {
 
     @Test
     @DisplayName("게시판좋아요 삭제 테스트 ")
-    void deleteCommentTest() {
+    void deletePostLikesTest() {
         //given(Post 와 PostLike가 주어졌을때 )
         Mockito.when(userRepository.findById(any())).thenReturn(Optional.of(user));
         Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
-        Mockito.when(postLikesRepository.deleteByUserAndPost(any(),any())).thenReturn(1L);
+        Mockito.when(postLikesRepository.deleteByUserAndPost(any(), any())).thenReturn(1L);
 
         //when(user가 좋아요를 삭제하면)
         PostLikesDeleteRequest postLikesDeleteRequest = PostLikesDeleteRequest.builder()

@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Lob;
-
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostCreateRequest {

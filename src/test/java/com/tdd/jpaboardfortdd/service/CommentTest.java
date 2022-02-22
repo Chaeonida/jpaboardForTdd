@@ -3,7 +3,10 @@ package com.tdd.jpaboardfortdd.service;
 import com.tdd.jpaboardfortdd.domain.Comment;
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.User;
-import com.tdd.jpaboardfortdd.dto.*;
+import com.tdd.jpaboardfortdd.dto.CommentCreateRequest;
+import com.tdd.jpaboardfortdd.dto.CommentDeleteRequest;
+import com.tdd.jpaboardfortdd.dto.CommentListResponse;
+import com.tdd.jpaboardfortdd.dto.CommentUpdateRequest;
 import com.tdd.jpaboardfortdd.repository.CommentRepository;
 import com.tdd.jpaboardfortdd.repository.PostRepository;
 import com.tdd.jpaboardfortdd.repository.UserRepository;
@@ -55,7 +58,7 @@ public class CommentTest {
                 .build();
 
         //when(user가 댓글을 작성하면)
-        Comment savedComment = commentService.save(commentRequest,post.getId());
+        Comment savedComment = commentService.save(commentRequest, post.getId());
 
         //then(등록이 되어야한다.)
         assertThat(savedComment.getId(), is(1L));
@@ -96,7 +99,7 @@ public class CommentTest {
                 .userId(1L)
                 .build();
 
-       Comment updatedComment = commentService.update(commentUpdateRequest,1L);
+        Comment updatedComment = commentService.update(commentUpdateRequest, 1L);
 
         //then(수정 되어야한다.)
         assertThat(updatedComment.getId(), is(1L));
@@ -116,7 +119,7 @@ public class CommentTest {
                 .build();
 
         //then(댓글 작성자와 다를경우 예외가 나타난다.)
-        assertThrows(IllegalArgumentException.class, () -> commentService.update(commentUpdateRequest,1L));
+        assertThrows(IllegalArgumentException.class, () -> commentService.update(commentUpdateRequest, 1L));
     }
 
     @Test
@@ -130,7 +133,7 @@ public class CommentTest {
         CommentDeleteRequest commentDeleteRequest = CommentDeleteRequest.builder()
                 .userId(1L)
                 .build();
-        Long deletedId = commentService.delete(commentDeleteRequest,1L);
+        Long deletedId = commentService.delete(commentDeleteRequest, 1L);
 
         //then(댓글이 삭제 되어야한다.)
         assertThat(deletedId, is(1L));

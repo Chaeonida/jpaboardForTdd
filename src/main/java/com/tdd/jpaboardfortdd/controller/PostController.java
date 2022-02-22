@@ -4,7 +4,6 @@ import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.dto.PostCreateRequest;
 import com.tdd.jpaboardfortdd.dto.PostDeleteRequest;
 import com.tdd.jpaboardfortdd.dto.PostUpdateRequest;
-import com.tdd.jpaboardfortdd.dto.UserUpdateRequest;
 import com.tdd.jpaboardfortdd.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

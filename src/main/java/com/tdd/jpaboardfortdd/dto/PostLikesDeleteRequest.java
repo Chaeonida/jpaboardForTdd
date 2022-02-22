@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostLikesDeleteRequest {
     private Long userId;
+
     @Builder
     public PostLikesDeleteRequest(Long userId) {
         this.userId = userId;
