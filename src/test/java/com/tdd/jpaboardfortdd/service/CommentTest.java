@@ -4,6 +4,7 @@ import com.tdd.jpaboardfortdd.domain.Comment;
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.User;
 import com.tdd.jpaboardfortdd.dto.CommentCreateRequest;
+import com.tdd.jpaboardfortdd.dto.CommentListResponse;
 import com.tdd.jpaboardfortdd.dto.PostCreateRequest;
 import com.tdd.jpaboardfortdd.repository.CommentRepository;
 import com.tdd.jpaboardfortdd.repository.PostRepository;
@@ -16,6 +17,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -40,7 +43,7 @@ public class CommentTest {
 
     @Test
     @DisplayName("댓글 등록 테스트 ")
-    void createPostTest() {
+    void createCommentTest() {
         //given(user,Post 가 주어졌을때 )
         Mockito.when(userRepository.findById(any())).thenReturn(Optional.of(user));
         Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
@@ -58,6 +61,27 @@ public class CommentTest {
         assertThat(savedComment.getId(), is(1L));
         assertThat(savedComment.getUser().getId(), is(1L));
         assertThat(savedComment.getPost().getId(), is(1L));
+    }
+
+    @Test
+    @DisplayName("댓글 조회 테스트 ")
+    void getCommentsTest() {
+        //given(Post와 Post에 해당하는 댓글이 주어졌을때 )
+        List<Comment> comments = new ArrayList<>();
+        Comment comment2 = Comment.builder().post(post).user(user).content("댓글내용2").build();
+        comments.add(comment);
+        comments.add(comment2);
+
+        Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
+        Mockito.when(commentRepository.findByPost(any())).thenReturn(comments);
+
+        //when(user가 댓글을 조회하면)
+        List<CommentListResponse> commentListResponseList = commentService.get(post.getId());
+
+        //then(조회가 되어야한다.)
+        assertThat(commentListResponseList.size(), is(2));
+        assertThat(commentListResponseList.get(0).getContent(), is("댓글내용"));
+        assertThat(commentListResponseList.get(1).getContent(), is("댓글내용2"));
     }
 
 

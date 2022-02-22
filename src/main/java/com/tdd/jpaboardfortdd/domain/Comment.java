@@ -1,5 +1,6 @@
 package com.tdd.jpaboardfortdd.domain;
 
+import com.tdd.jpaboardfortdd.dto.CommentListResponse;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,5 +43,12 @@ public class Comment {
                     .remove(this);
         }
         this.post = post;
+    }
+
+   public CommentListResponse toCommentListResponse() {
+        return CommentListResponse.builder()
+                .userId(user.getId())
+                .content(content)
+                .build();
     }
 }
