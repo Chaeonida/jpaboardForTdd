@@ -4,6 +4,7 @@ import com.tdd.jpaboardfortdd.domain.Comment;
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.User;
 import com.tdd.jpaboardfortdd.dto.CommentCreateRequest;
+import com.tdd.jpaboardfortdd.dto.CommentDeleteRequest;
 import com.tdd.jpaboardfortdd.dto.CommentListResponse;
 import com.tdd.jpaboardfortdd.dto.CommentUpdateRequest;
 import com.tdd.jpaboardfortdd.repository.CommentRepository;
@@ -34,7 +35,7 @@ public class CommentService {
                 .post(post)
                 .build();
 
-        return  commentRepository.save(comment);
+        return commentRepository.save(comment);
     }
 
     @Transactional(readOnly = true)
@@ -47,10 +48,21 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentUpdateRequest.getCommentId()).orElseThrow(IllegalArgumentException::new);
         Long userId = commentUpdateRequest.getUserId();
         Long compareUserId = comment.getUser().getId();
-        commentWriterValid(userId,compareUserId);
+        commentWriterValid(userId, compareUserId);
         comment.update(commentUpdateRequest.getContent());
 
         return comment;
+    }
+
+
+    public Long delete(CommentDeleteRequest commentDeleteRequest, long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(IllegalArgumentException::new);
+        Long userId = commentDeleteRequest.getUserId();
+        Long compareUserId = comment.getUser().getId();
+        commentWriterValid(userId, compareUserId);
+
+        commentRepository.delete(comment);
+        return commentId;
     }
 
     public void commentWriterValid(final Long userId, final Long compareUserId) {

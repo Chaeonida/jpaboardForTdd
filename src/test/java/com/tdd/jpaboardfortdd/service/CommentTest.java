@@ -3,10 +3,7 @@ package com.tdd.jpaboardfortdd.service;
 import com.tdd.jpaboardfortdd.domain.Comment;
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.User;
-import com.tdd.jpaboardfortdd.dto.CommentCreateRequest;
-import com.tdd.jpaboardfortdd.dto.CommentListResponse;
-import com.tdd.jpaboardfortdd.dto.CommentUpdateRequest;
-import com.tdd.jpaboardfortdd.dto.PostCreateRequest;
+import com.tdd.jpaboardfortdd.dto.*;
 import com.tdd.jpaboardfortdd.repository.CommentRepository;
 import com.tdd.jpaboardfortdd.repository.PostRepository;
 import com.tdd.jpaboardfortdd.repository.UserRepository;
@@ -133,7 +130,7 @@ public class CommentTest {
         CommentDeleteRequest commentDeleteRequest = CommentDeleteRequest.builder()
                 .userId(1L)
                 .build();
-        Long deletedId = commentService.delete(commentDeleteRequest,commentId);
+        Long deletedId = commentService.delete(commentDeleteRequest,1L);
 
         //then(댓글이 삭제 되어야한다.)
         assertThat(deletedId, is(1L));
