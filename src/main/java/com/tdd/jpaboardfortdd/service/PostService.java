@@ -17,7 +17,7 @@ public class PostService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Post save(PostCreateRequest postCreateRequest, Long userId) {
+    public Post savePost(PostCreateRequest postCreateRequest, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
         Post post = Post.builder()
                 .title(postCreateRequest.getTitle())
@@ -29,7 +29,7 @@ public class PostService {
     }
 
     @Transactional
-    public Post update(PostUpdateRequest postUpdateRequest, Long postId,Long userId) {
+    public Post updatePost(PostUpdateRequest postUpdateRequest, Long postId,Long userId) {
         Post findPost = postRepository.findById(postId).orElseThrow(IllegalArgumentException::new);
         postWriterValid(findPost.getUser().getId(),userId);
         findPost.updatePost(postUpdateRequest.getTitle(), postUpdateRequest.getContent());
@@ -38,12 +38,12 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Post find(Long id) {
+    public Post getPostById(Long id) {
         return postRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
     @Transactional
-    public Long delete(Long postId, Long userId) {
+    public Long deletePost(Long postId, Long userId) {
         postWriterValid(postId, userId);
         postRepository.deleteById(postId);
 

@@ -48,7 +48,7 @@ public class PostLikesTest {
         Mockito.when(postLikesRepository.save(any())).thenReturn(postLike);
 
         //when(user가 게시판에 좋아요를 누르면)
-        PostLikes savedPostLikes = postLikesService.save(user.getId(), post.getId());
+        PostLikes savedPostLikes = postLikesService.savePostLike(user.getId(), post.getId());
 
         //then(등록이 되어야한다.)
         assertThat(savedPostLikes.getId(), is(1L));
@@ -67,7 +67,7 @@ public class PostLikesTest {
         Mockito.when(postLikesRepository.getByPost(any())).thenReturn(postLikes);
 
         //when(좋아요를 조회하면)
-        List<PostLikesResponse> postLikesResponses = postLikesService.get(post.getId());
+        List<PostLikesResponse> postLikesResponses = postLikesService.getPostLikesByPostId(post.getId());
 
         //then(조회가 되어야한다.)
         assertThat(postLikesResponses.size(), is(1));
@@ -82,7 +82,7 @@ public class PostLikesTest {
         Mockito.when(postLikesRepository.deleteByUserIdAndPostId(any(), any())).thenReturn(1L);
 
         //when(user가 좋아요를 삭제하면)
-        Long deletedId = postLikesService.delete(user.getId(), post.getId());
+        Long deletedId = postLikesService.deletePostLike(user.getId(), post.getId());
 
         //then(좋아요가 삭제 되어야한다.)
         assertThat(deletedId, is(1L));

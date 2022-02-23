@@ -18,27 +18,27 @@ public class UserController {
     public ResponseEntity<Long> createUser(
             @RequestBody UserCreateRequest userCreateRequest
     ) {
-        return ResponseEntity.ok(userService.save(userCreateRequest));
+        return ResponseEntity.ok(userService.saveUser(userCreateRequest));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Long> updateUser(
             @PathVariable("id") Long userId, @RequestBody UserUpdateRequest userUpdateRequest
     ) {
-        return ResponseEntity.ok(userService.update(userUpdateRequest, userId));
+        return ResponseEntity.ok(userService.updateUser(userUpdateRequest, userId));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDetailResponse> get(
             @PathVariable("id") Long userId
     ) {
-        return ResponseEntity.ok(userService.get(userId));
+        return ResponseEntity.ok(userService.getUserByUserId(userId));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(
             @PathVariable("id") Long userId
     ) {
-        return ResponseEntity.ok(userService.delete(userId));
+        return ResponseEntity.ok(userService.deleteUser(userId));
     }
 }

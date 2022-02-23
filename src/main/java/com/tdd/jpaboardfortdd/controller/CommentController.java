@@ -22,7 +22,7 @@ public class CommentController {
             @PathVariable("id") Long postId,
             @RequestBody CommentCreateRequest commentCreateRequest
     ) {
-        return ResponseEntity.ok(commentService.save(commentCreateRequest, postId, userId).getId());
+        return ResponseEntity.ok(commentService.saveComment(commentCreateRequest, postId, userId).getId());
     }
 
     @PutMapping("{id}")
@@ -32,7 +32,7 @@ public class CommentController {
             @PathVariable("id") Long commentId,
             @RequestBody CommentUpdateRequest commentUpdateRequest
     ) {
-        return ResponseEntity.ok(commentService.update(commentUpdateRequest, commentId, userId).getId());
+        return ResponseEntity.ok(commentService.updateComment(commentUpdateRequest, commentId, userId).getId());
     }
 
     @GetMapping("{id}")
@@ -41,7 +41,7 @@ public class CommentController {
             @PathVariable("id") Long postId,
             @PathVariable("id") Long commentId
     ) {
-        return ResponseEntity.ok(commentService.get(postId));
+        return ResponseEntity.ok(commentService.getCommentByPostId(postId));
     }
 
     @DeleteMapping("/{id}")
@@ -50,6 +50,6 @@ public class CommentController {
             @PathVariable("id") Long postId,
             @PathVariable("id") Long commentId
     ) {
-        return ResponseEntity.ok(commentService.delete(userId, commentId));
+        return ResponseEntity.ok(commentService.deleteComment(userId, commentId));
     }
 }

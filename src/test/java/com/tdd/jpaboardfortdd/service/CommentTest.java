@@ -56,7 +56,7 @@ public class CommentTest {
                 .build();
 
         //when(user가 댓글을 작성하면)
-        Comment savedComment = commentService.save(commentRequest, post.getId(), user.getId());
+        Comment savedComment = commentService.saveComment(commentRequest, post.getId(), user.getId());
 
         //then(등록이 되어야한다.)
         assertThat(savedComment.getId(), is(1L));
@@ -77,7 +77,7 @@ public class CommentTest {
         Mockito.when(commentRepository.findByPost(any())).thenReturn(comments);
 
         //when(user가 댓글을 조회하면)
-        List<CommentListResponse> commentListResponseList = commentService.get(post.getId());
+        List<CommentListResponse> commentListResponseList = commentService.getCommentByPostId(post.getId());
 
         //then(조회가 되어야한다.)
         assertThat(commentListResponseList.size(), is(2));
@@ -96,7 +96,7 @@ public class CommentTest {
                 .content("댓글수정")
                 .build();
 
-        Comment updatedComment = commentService.update(commentUpdateRequest, comment.getId(), user.getId());
+        Comment updatedComment = commentService.updateComment(commentUpdateRequest, comment.getId(), user.getId());
 
         //then(수정 되어야한다.)
         assertThat(updatedComment.getId(), is(1L));
@@ -115,7 +115,7 @@ public class CommentTest {
                 .build();
 
         //then(댓글 작성자와 다를경우 예외가 나타난다.)
-        assertThrows(IllegalArgumentException.class, () -> commentService.update(
+        assertThrows(IllegalArgumentException.class, () -> commentService.updateComment(
                 commentUpdateRequest,
                 comment.getId(),
                 user.getId()));
@@ -129,7 +129,7 @@ public class CommentTest {
         doNothing().when(commentRepository).delete(any());
 
         //when(user가 댓글을 삭제하면)
-        Long deletedId = commentService.delete(user.getId(), comment.getId());
+        Long deletedId = commentService.deleteComment(user.getId(), comment.getId());
 
         //then(댓글이 삭제 되어야한다.)
         assertThat(deletedId, is(1L));

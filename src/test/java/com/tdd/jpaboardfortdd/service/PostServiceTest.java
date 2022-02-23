@@ -48,7 +48,7 @@ public class PostServiceTest {
                 .build();
 
         //when(user가 게시글을 작성하면)
-        Post savedPost = postService.save(postCreateRequest,user.getId());
+        Post savedPost = postService.savePost(postCreateRequest,user.getId());
 
         //then(등록이 되어야한다.)
         assertThat(savedPost.getId(), is(1L));
@@ -66,7 +66,7 @@ public class PostServiceTest {
                 .build();
 
         //when(게시글을 수정 하면)
-        Post updatedPost = postService.update(postUpdateRequest, post.getId(),user.getId());
+        Post updatedPost = postService.updatePost(postUpdateRequest, post.getId(),user.getId());
 
         //then(게시글이 수정 되어야 한다.)
         assertThat(updatedPost.getContent(), is("내용수정"));
@@ -86,7 +86,7 @@ public class PostServiceTest {
         //when(게시글을 수정 하면)
 
         //then(작성한 user와 다를경우 예외가 나타난다)
-        assertThrows(IllegalArgumentException.class, () -> postService.update(postUpdateRequest, post.getId(), user.getId()));
+        assertThrows(IllegalArgumentException.class, () -> postService.updatePost(postUpdateRequest, post.getId(), user.getId()));
     }
 
     @Test
@@ -96,7 +96,7 @@ public class PostServiceTest {
         Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
 
         //when(게시글을 조회 하면)
-        Post findPost = postService.find(post.getId());
+        Post findPost = postService.getPostById(post.getId());
 
         //then(게시글이 조회 되어야 한다.)
         assertThat(findPost.getId(), is(post.getId()));
@@ -111,7 +111,7 @@ public class PostServiceTest {
         Mockito.when(postRepository.findById(any())).thenReturn(Optional.empty());
 
         //then(게시글이 조회 되어야 한다.)
-        assertThrows(IllegalArgumentException.class, () -> postService.find(2L));
+        assertThrows(IllegalArgumentException.class, () -> postService.getPostById(2L));
     }
 
     @Test
@@ -120,7 +120,7 @@ public class PostServiceTest {
         //given(저장 되어 있는 Post 가 주어졌을때 )
 
         //when(게시글을 삭제 하면)
-        Long deletedPostId = postService.delete(post.getId(), user.getId());
+        Long deletedPostId = postService.deletePost(post.getId(), user.getId());
 
         //then(게시글이 삭제 되어야 한다.)
         assertThat(deletedPostId, is(post.getId()));

@@ -16,7 +16,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long save(UserCreateRequest userCreateRequest) {
+    public Long saveUser(UserCreateRequest userCreateRequest) {
         User user = User.builder()
                 .age(userCreateRequest.getAge())
                 .hobby(userCreateRequest.getHobby())
@@ -27,14 +27,14 @@ public class UserService {
     }
 
     @Transactional
-    public Long update(UserUpdateRequest userUpdateRequest, Long userId) {
+    public Long updateUser(UserUpdateRequest userUpdateRequest, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
         user.update(userUpdateRequest.getName(), userUpdateRequest.getHobby(), userUpdateRequest.getAge());
 
         return user.getId();
     }
 
-    public UserDetailResponse get(Long userId) {
+    public UserDetailResponse getUserByUserId(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
 
         return UserDetailResponse.builder()
@@ -45,7 +45,7 @@ public class UserService {
                 .build();
     }
 
-    public Long delete(Long userId) {
+    public Long deleteUser(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(IllegalAccessError::new);
         userRepository.delete(user);
 

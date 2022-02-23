@@ -25,7 +25,7 @@ public class CommentService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Comment save(CommentCreateRequest commentRequest, Long postId, Long userId) {
+    public Comment saveComment(CommentCreateRequest commentRequest, Long postId, Long userId) {
         Post post = postRepository.findById(postId).orElseThrow(IllegalArgumentException::new);
         User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
         Comment comment = Comment.builder()
@@ -38,13 +38,13 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public List<CommentListResponse> get(Long postId) {
+    public List<CommentListResponse> getCommentByPostId(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(IllegalArgumentException::new);
         return commentRepository.findByPost(post).stream().map(Comment::toCommentListResponse).collect(toList());
     }
 
     @Transactional
-    public Comment update(CommentUpdateRequest commentUpdateRequest, Long commentId, Long userId) {
+    public Comment updateComment(CommentUpdateRequest commentUpdateRequest, Long commentId, Long userId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(IllegalArgumentException::new);;
         Long compareUserId = comment.getUserId();
         validCommentWriter(userId, compareUserId);
@@ -54,7 +54,7 @@ public class CommentService {
     }
 
     @Transactional
-    public Long delete(Long userId, Long commentId) {
+    public Long deleteComment(Long userId, Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(IllegalArgumentException::new);
         Long compareUserId = comment.getUserId();
         validCommentWriter(userId, compareUserId);

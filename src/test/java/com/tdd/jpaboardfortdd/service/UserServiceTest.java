@@ -40,7 +40,7 @@ public class UserServiceTest {
         Mockito.when(userRepository.save(any())).thenReturn(user);
 
         //when(user가 회원가입을 하면)
-        Long savedUserId = userService.save(userCreateRequest);
+        Long savedUserId = userService.saveUser(userCreateRequest);
 
         //then(등록이 되어야한다.)
         assertThat(savedUserId, is(1L));
@@ -54,7 +54,7 @@ public class UserServiceTest {
         Mockito.when(userRepository.findById(any())).thenReturn(java.util.Optional.of(user));
 
         //when(user가 회원가입을 하면)
-        Long updatedUserId = userService.update(userUpdateRequest, user.getId());
+        Long updatedUserId = userService.updateUser(userUpdateRequest, user.getId());
 
         //then(등록이 되어야한다.)
         assertThat(updatedUserId, is(1L));
@@ -67,7 +67,7 @@ public class UserServiceTest {
         Mockito.when(userRepository.findById(any())).thenReturn(java.util.Optional.of(user));
 
         //when(유저를 조회 하면)
-        UserDetailResponse userDetailResponse = userService.get(user.getId());
+        UserDetailResponse userDetailResponse = userService.getUserByUserId(user.getId());
 
         //then(유저가 조회 되어야 한다.)
         assertThat(userDetailResponse.getId(), is(user.getId()));
@@ -82,7 +82,7 @@ public class UserServiceTest {
         //when(저장되어있지 않은 id로 유저를 조회 하면)
 
         //then(예외가 터져야 한다.)
-        assertThrows(IllegalArgumentException.class, () -> userService.get(2L));
+        assertThrows(IllegalArgumentException.class, () -> userService.getUserByUserId(2L));
     }
 
     @Test
@@ -93,7 +93,7 @@ public class UserServiceTest {
         doNothing().when(userRepository).delete(any());
 
         //when(유저를 삭제 하면)
-        Long deletedUserId = userService.delete(user.getId());
+        Long deletedUserId = userService.deleteUser(user.getId());
 
         //then(유저는 삭제 되어야 한다.)
         assertThat(deletedUserId, is(user.getId()));

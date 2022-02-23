@@ -19,22 +19,23 @@ public class PostController {
             @PathVariable("id") Long userId,
             @RequestBody PostCreateRequest postCreateRequest
     ) {
-        return ResponseEntity.ok(postService.save(postCreateRequest,userId).getId());
+        return ResponseEntity.ok(postService.savePost(postCreateRequest,userId).getId());
     }
 
     @PutMapping("{id}")
     public ResponseEntity<Long> update(
             @PathVariable("id") Long userId,
-            @PathVariable("id") Long postId, @RequestBody PostUpdateRequest postUpdateRequest
+            @PathVariable("id") Long postId,
+            @RequestBody PostUpdateRequest postUpdateRequest
     ) {
-        return ResponseEntity.ok(postService.update(postUpdateRequest, postId, userId).getId());
+        return ResponseEntity.ok(postService.updatePost(postUpdateRequest, postId, userId).getId());
     }
 
     @GetMapping("{id}")
     public ResponseEntity<Post> get(
             @PathVariable("id") Long postId
     ) {
-        return ResponseEntity.ok(postService.find(postId));
+        return ResponseEntity.ok(postService.getPostById(postId));
     }
 
     @DeleteMapping("{id}")
@@ -42,6 +43,6 @@ public class PostController {
             @PathVariable("id") Long userId,
             @PathVariable("id") Long postId
     ) {
-        return ResponseEntity.ok(postService.delete(postId, userId));
+        return ResponseEntity.ok(postService.deletePost(postId, userId));
     }
 }
