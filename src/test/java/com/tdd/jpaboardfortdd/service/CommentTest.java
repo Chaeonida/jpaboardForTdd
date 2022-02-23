@@ -77,12 +77,12 @@ public class CommentTest {
         Mockito.when(commentRepository.findByPost(any())).thenReturn(comments);
 
         //when(user가 댓글을 조회하면)
-        List<CommentListResponse> commentListResponseList = commentService.getCommentByPostId(post.getId());
+        List<CommentListResponse> commentListResponses = commentService.getCommentByPostId(post.getId());
 
         //then(조회가 되어야한다.)
-        assertThat(commentListResponseList.size(), is(2));
-        assertThat(commentListResponseList.get(0).getContent(), is("댓글내용"));
-        assertThat(commentListResponseList.get(1).getContent(), is("댓글내용2"));
+        assertThat(commentListResponses.size(), is(2));
+        assertThat(commentListResponses.get(0).getContent(), is("댓글내용"));
+        assertThat(commentListResponses.get(1).getContent(), is("댓글내용2"));
     }
 
     @Test
