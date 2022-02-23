@@ -3,8 +3,6 @@ package com.tdd.jpaboardfortdd.service;
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.PostLikes;
 import com.tdd.jpaboardfortdd.domain.User;
-import com.tdd.jpaboardfortdd.dto.PostLikesCreateRequest;
-import com.tdd.jpaboardfortdd.dto.PostLikesDeleteRequest;
 import com.tdd.jpaboardfortdd.dto.PostLikesResponse;
 import com.tdd.jpaboardfortdd.repository.PostLikesRepository;
 import com.tdd.jpaboardfortdd.repository.PostRepository;
@@ -49,10 +47,8 @@ public class PostLikesTest {
         Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
         Mockito.when(postLikesRepository.save(any())).thenReturn(postLike);
 
-        PostLikesCreateRequest postLikesCreateRequest = PostLikesCreateRequest.builder().userId(1L).build();
-
         //when(user가 게시판에 좋아요를 누르면)
-        PostLikes savedPostLikes = postLikesService.save(postLikesCreateRequest, post.getId());
+        PostLikes savedPostLikes = postLikesService.save(user.getId(), post.getId());
 
         //then(등록이 되어야한다.)
         assertThat(savedPostLikes.getId(), is(1L));
@@ -86,10 +82,7 @@ public class PostLikesTest {
         Mockito.when(postLikesRepository.deleteByUserAndPost(any(), any())).thenReturn(1L);
 
         //when(user가 좋아요를 삭제하면)
-        PostLikesDeleteRequest postLikesDeleteRequest = PostLikesDeleteRequest.builder()
-                .userId(1L)
-                .build();
-        Long deletedId = postLikesService.delete(postLikesDeleteRequest, 1L);
+        Long deletedId = postLikesService.delete(user.getId(), post.getId());
 
         //then(좋아요가 삭제 되어야한다.)
         assertThat(deletedId, is(1L));
