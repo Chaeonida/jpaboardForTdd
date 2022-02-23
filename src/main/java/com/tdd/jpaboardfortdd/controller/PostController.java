@@ -2,7 +2,6 @@ package com.tdd.jpaboardfortdd.controller;
 
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.dto.PostCreateRequest;
-import com.tdd.jpaboardfortdd.dto.PostDeleteRequest;
 import com.tdd.jpaboardfortdd.dto.PostUpdateRequest;
 import com.tdd.jpaboardfortdd.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -11,34 +10,38 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value = "users/{id}/posts")
 public class PostController {
     private final PostService postService;
 
-    @PostMapping("/posts")
+    @PostMapping
     public ResponseEntity<Long> create(
+            @PathVariable("id") Long userId,
             @RequestBody PostCreateRequest postCreateRequest
     ) {
-        return ResponseEntity.ok(postService.save(postCreateRequest).getId());
+        return ResponseEntity.ok(postService.save(postCreateRequest,userId).getId());
     }
 
-    @PutMapping("/posts/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<Long> update(
+            @PathVariable("id") Long userId,
             @PathVariable("id") Long postId, @RequestBody PostUpdateRequest postUpdateRequest
     ) {
-        return ResponseEntity.ok(postService.update(postUpdateRequest, postId).getId());
+        return ResponseEntity.ok(postService.update(postUpdateRequest, postId, userId).getId());
     }
 
-    @GetMapping("/posts/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<Post> get(
             @PathVariable("id") Long postId
     ) {
         return ResponseEntity.ok(postService.find(postId));
     }
 
-    @DeleteMapping("/posts/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Long> delete(
-            @PathVariable("id") Long postId, @RequestBody PostDeleteRequest postDeleteRequest
+            @PathVariable("id") Long userId,
+            @PathVariable("id") Long postId
     ) {
-        return ResponseEntity.ok(postService.delete(postId, postDeleteRequest));
+        return ResponseEntity.ok(postService.delete(postId, userId));
     }
 }

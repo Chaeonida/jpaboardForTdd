@@ -3,7 +3,6 @@ package com.tdd.jpaboardfortdd.service;
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.User;
 import com.tdd.jpaboardfortdd.dto.PostCreateRequest;
-import com.tdd.jpaboardfortdd.dto.PostDeleteRequest;
 import com.tdd.jpaboardfortdd.dto.PostUpdateRequest;
 import com.tdd.jpaboardfortdd.repository.PostRepository;
 import com.tdd.jpaboardfortdd.repository.UserRepository;
@@ -46,11 +45,10 @@ public class PostServiceTest {
         PostCreateRequest postCreateRequest = PostCreateRequest.builder()
                 .title("제목")
                 .content("아무내용")
-                .userId(1L)
                 .build();
 
         //when(user가 게시글을 작성하면)
-        Post savedPost = postService.save(postCreateRequest);
+        Post savedPost = postService.save(postCreateRequest,user.getId());
 
         //then(등록이 되어야한다.)
         assertThat(savedPost.getId(), is(1L));
@@ -65,11 +63,10 @@ public class PostServiceTest {
         PostUpdateRequest postUpdateRequest = PostUpdateRequest.builder()
                 .content("내용수정")
                 .title("제목수정")
-                .userId(1L)
                 .build();
 
         //when(게시글을 수정 하면)
-        Post updatedPost = postService.update(postUpdateRequest, post.getId());
+        Post updatedPost = postService.update(postUpdateRequest, post.getId(),user.getId());
 
         //then(게시글이 수정 되어야 한다.)
         assertThat(updatedPost.getContent(), is("내용수정"));
@@ -80,17 +77,16 @@ public class PostServiceTest {
     @DisplayName("게시글 수정 실패 테스트 ")
     void updatePostFailTest() {
         //given(저장 되어 있는 Post 가 주어졌을때 )
-        Mockito.when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
+        Mockito.when(postRepository.findById(post.getId())).thenReturn(Optional.empty());
         PostUpdateRequest postUpdateRequest = PostUpdateRequest.builder()
                 .content("내용수정")
                 .title("제목수정")
-                .userId(2L)
                 .build();
 
         //when(게시글을 수정 하면)
 
         //then(작성한 user와 다를경우 예외가 나타난다)
-        assertThrows(IllegalArgumentException.class, () -> postService.update(postUpdateRequest, post.getId()));
+        assertThrows(IllegalArgumentException.class, () -> postService.update(postUpdateRequest, post.getId(), user.getId()));
     }
 
     @Test
@@ -104,7 +100,6 @@ public class PostServiceTest {
 
         //then(게시글이 조회 되어야 한다.)
         assertThat(findPost.getId(), is(post.getId()));
-        assertThrows(IllegalArgumentException.class, () -> postService.find(2L));
     }
 
     @Test
@@ -123,12 +118,9 @@ public class PostServiceTest {
     @DisplayName("게시글 삭제 테스트 ")
     void deletePostTest() {
         //given(저장 되어 있는 Post 가 주어졌을때 )
-        PostDeleteRequest postDeleteRequest = PostDeleteRequest.builder()
-                .userId(1L)
-                .build();
 
         //when(게시글을 삭제 하면)
-        Long deletedPostId = postService.delete(post.getId(), postDeleteRequest);
+        Long deletedPostId = postService.delete(post.getId(), user.getId());
 
         //then(게시글이 삭제 되어야 한다.)
         assertThat(deletedPostId, is(post.getId()));
