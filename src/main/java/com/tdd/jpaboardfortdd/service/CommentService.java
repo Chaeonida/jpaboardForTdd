@@ -4,7 +4,6 @@ import com.tdd.jpaboardfortdd.domain.Comment;
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.User;
 import com.tdd.jpaboardfortdd.dto.CommentCreateRequest;
-import com.tdd.jpaboardfortdd.dto.CommentDeleteRequest;
 import com.tdd.jpaboardfortdd.dto.CommentListResponse;
 import com.tdd.jpaboardfortdd.dto.CommentUpdateRequest;
 import com.tdd.jpaboardfortdd.repository.CommentRepository;
@@ -21,14 +20,14 @@ import static java.util.stream.Collectors.toList;
 @Service
 @RequiredArgsConstructor
 public class CommentService {
-    private CommentRepository commentRepository;
-    private PostRepository postRepository;
-    private UserRepository userRepository;
+    private  final CommentRepository commentRepository;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     @Transactional
-    public Comment save(CommentCreateRequest commentRequest, Long postId) {
+    public Comment save(CommentCreateRequest commentRequest, Long postId, Long userId) {
         Post post = postRepository.findById(postId).orElseThrow(IllegalArgumentException::new);
-        User user = userRepository.findById(commentRequest.getUserId()).orElseThrow(IllegalArgumentException::new);
+        User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
         Comment comment = Comment.builder()
                 .user(user)
                 .content(commentRequest.getContent())
@@ -44,27 +43,27 @@ public class CommentService {
         return commentRepository.findByPost(post).stream().map(Comment::toCommentListResponse).collect(toList());
     }
 
-    public Comment update(CommentUpdateRequest commentUpdateRequest, Long commentId) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(IllegalArgumentException::new);
-        Long userId = commentUpdateRequest.getUserId();
+    @Transactional
+    public Comment update(CommentUpdateRequest commentUpdateRequest, Long commentId, Long userId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(IllegalArgumentException::new);;
         Long compareUserId = comment.getUser().getId();
-        commentWriterValid(userId, compareUserId);
+        validCommentWriter(userId, compareUserId);
         comment.update(commentUpdateRequest.getContent());
 
         return comment;
     }
 
-    public Long delete(CommentDeleteRequest commentDeleteRequest, long commentId) {
+    @Transactional
+    public Long delete(Long userId, long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(IllegalArgumentException::new);
-        Long userId = commentDeleteRequest.getUserId();
         Long compareUserId = comment.getUser().getId();
-        commentWriterValid(userId, compareUserId);
+        validCommentWriter(userId, compareUserId);
 
         commentRepository.delete(comment);
         return commentId;
     }
 
-    public void commentWriterValid(final Long userId, final Long compareUserId) {
+    public void validCommentWriter(final Long userId, final Long compareUserId) {
         if (!userId.equals(compareUserId)) {
             throw new IllegalArgumentException();
         }

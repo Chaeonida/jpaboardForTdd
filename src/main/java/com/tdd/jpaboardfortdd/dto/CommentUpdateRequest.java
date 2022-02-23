@@ -9,11 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentUpdateRequest {
     private String content;
-    private Long userId;
 
     @Builder
-    public CommentUpdateRequest(String content, Long userId) {
+    public CommentUpdateRequest(String content) {
         this.content = content;
-        this.userId = userId;
     }
 }

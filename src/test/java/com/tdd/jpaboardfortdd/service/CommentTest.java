@@ -4,7 +4,6 @@ import com.tdd.jpaboardfortdd.domain.Comment;
 import com.tdd.jpaboardfortdd.domain.Post;
 import com.tdd.jpaboardfortdd.domain.User;
 import com.tdd.jpaboardfortdd.dto.CommentCreateRequest;
-import com.tdd.jpaboardfortdd.dto.CommentDeleteRequest;
 import com.tdd.jpaboardfortdd.dto.CommentListResponse;
 import com.tdd.jpaboardfortdd.dto.CommentUpdateRequest;
 import com.tdd.jpaboardfortdd.repository.CommentRepository;
@@ -46,7 +45,7 @@ public class CommentTest {
 
     @Test
     @DisplayName("댓글 등록 테스트 ")
-    void createCommentTest() {
+    void createCommentTest(Long userId) {
         //given(user,Post 가 주어졌을때 )
         Mockito.when(userRepository.findById(any())).thenReturn(Optional.of(user));
         Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
@@ -54,11 +53,10 @@ public class CommentTest {
 
         CommentCreateRequest commentRequest = CommentCreateRequest.builder()
                 .content("댓글내용")
-                .userId(1L)
                 .build();
 
         //when(user가 댓글을 작성하면)
-        Comment savedComment = commentService.save(commentRequest, post.getId());
+        Comment savedComment = commentService.save(commentRequest, post.getId(), user.getId());
 
         //then(등록이 되어야한다.)
         assertThat(savedComment.getId(), is(1L));
@@ -96,10 +94,9 @@ public class CommentTest {
         //when(user가 댓글을 수정하면)
         CommentUpdateRequest commentUpdateRequest = CommentUpdateRequest.builder()
                 .content("댓글수정")
-                .userId(1L)
                 .build();
 
-        Comment updatedComment = commentService.update(commentUpdateRequest, 1L);
+        Comment updatedComment = commentService.update(commentUpdateRequest, comment.getId(), user.getId());
 
         //then(수정 되어야한다.)
         assertThat(updatedComment.getId(), is(1L));
@@ -110,16 +107,18 @@ public class CommentTest {
     @DisplayName("댓글 수정 실패 테스트 ")
     void updateCommentFailTest() {
         //given(Post와 Post에 해당하는 댓글이 주어졌을때 )
-        Mockito.when(commentRepository.findById(any())).thenReturn(Optional.of(comment));
+        Mockito.when(commentRepository.findById(any())).thenReturn(Optional.empty());
 
         //when(user가 댓글을 수정하면)
         CommentUpdateRequest commentUpdateRequest = CommentUpdateRequest.builder()
                 .content("댓글수정")
-                .userId(2L)
                 .build();
 
         //then(댓글 작성자와 다를경우 예외가 나타난다.)
-        assertThrows(IllegalArgumentException.class, () -> commentService.update(commentUpdateRequest, 1L));
+        assertThrows(IllegalArgumentException.class, () -> commentService.update(
+                commentUpdateRequest,
+                comment.getId(),
+                user.getId()));
     }
 
     @Test
@@ -130,10 +129,7 @@ public class CommentTest {
         doNothing().when(commentRepository).delete(any());
 
         //when(user가 댓글을 삭제하면)
-        CommentDeleteRequest commentDeleteRequest = CommentDeleteRequest.builder()
-                .userId(1L)
-                .build();
-        Long deletedId = commentService.delete(commentDeleteRequest, 1L);
+        Long deletedId = commentService.delete(user.getId(), comment.getId());
 
         //then(댓글이 삭제 되어야한다.)
         assertThat(deletedId, is(1L));
