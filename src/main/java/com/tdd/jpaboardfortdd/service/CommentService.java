@@ -54,7 +54,7 @@ public class CommentService {
     }
 
     @Transactional
-    public Long delete(Long userId, long commentId) {
+    public Long delete(Long userId, Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(IllegalArgumentException::new);
         Long compareUserId = comment.getUser().getId();
         validCommentWriter(userId, compareUserId);

@@ -79,7 +79,7 @@ public class PostLikesTest {
         //given(Post 와 PostLike가 주어졌을때 )
         Mockito.when(userRepository.findById(any())).thenReturn(Optional.of(user));
         Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
-        Mockito.when(postLikesRepository.deleteByUserAndPost(any(), any())).thenReturn(1L);
+        Mockito.when(postLikesRepository.deleteByUserIdAndPostId(any(), any())).thenReturn(1L);
 
         //when(user가 좋아요를 삭제하면)
         Long deletedId = postLikesService.delete(user.getId(), post.getId());

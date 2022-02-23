@@ -24,14 +24,12 @@ public class PostLikesService {
     public PostLikes save(Long userId, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(IllegalArgumentException::new);
         User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
-        validDuplicatePostLikes(user, post);
+        if (postLikesRepository.existsByUserIdAndPostId(userId, postId)) {
+            delete(userId, postId);
+        }
 
         PostLikes postLikes = PostLikes.builder().user(user).post(post).build();
         return postLikesRepository.save(postLikes);
-    }
-
-    private void validDuplicatePostLikes(User user, Post post) {
-        if (postLikesRepository.existsByUserAndPost(user, post)) delete(user.getId(), post.getId());
     }
 
     public List<PostLikesResponse> get(Long postId) {
@@ -41,10 +39,7 @@ public class PostLikesService {
     }
 
     public Long delete(Long userId, long postId) {
-        Post post = postRepository.findById(postId).orElseThrow(IllegalArgumentException::new);
-        User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
-        validDuplicatePostLikes(user, post);
 
-        return postLikesRepository.deleteByUserAndPost(user, post);
+        return postLikesRepository.deleteByUserIdAndPostId(userId, postId);
     }
 }
