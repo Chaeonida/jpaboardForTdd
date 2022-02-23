@@ -22,6 +22,7 @@ public class PostService {
         Post post = Post.builder()
                 .title(postCreateRequest.getTitle())
                 .content(postCreateRequest.getContent())
+                .user(user)
                 .build();
 
         return postRepository.save(post);
