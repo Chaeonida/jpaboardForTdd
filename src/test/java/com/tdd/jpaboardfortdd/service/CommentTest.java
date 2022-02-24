@@ -62,6 +62,7 @@ public class CommentTest {
         assertThat(savedComment.getId(), is(1L));
         assertThat(savedComment.getUser().getId(), is(1L));
         assertThat(savedComment.getPost().getId(), is(1L));
+        assertThat(savedComment.getContent(), is("댓글내용"));
     }
 
     @Test

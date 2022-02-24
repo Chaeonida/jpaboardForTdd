@@ -53,6 +53,8 @@ public class PostServiceTest {
         //then(등록이 되어야한다.)
         assertThat(savedPost.getId(), is(1L));
         assertThat(savedPost.getUser().getId(), is(1L));
+        assertThat(savedPost.getContent(), is("아무내용"));
+        assertThat(savedPost.getTitle(), is("제목"));
     }
 
     @Test
@@ -86,7 +88,8 @@ public class PostServiceTest {
         //when(게시글을 수정 하면)
 
         //then(작성한 user와 다를경우 예외가 나타난다)
-        assertThrows(IllegalArgumentException.class, () -> postService.updatePost(postUpdateRequest, post.getId(), user.getId()));
+        assertThrows(IllegalArgumentException.class, () -> postService.updatePost(
+                postUpdateRequest, post.getId(), user.getId()));
     }
 
     @Test
