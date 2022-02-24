@@ -19,7 +19,7 @@ public class PostController {
             @PathVariable("id") Long userId,
             @RequestBody PostCreateRequest postCreateRequest
     ) {
-        return ResponseEntity.ok(postService.savePost(postCreateRequest,userId).getId());
+        return ResponseEntity.ok(postService.savePost(postCreateRequest, userId).getId());
     }
 
     @PutMapping("{id}")

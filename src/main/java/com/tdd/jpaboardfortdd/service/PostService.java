@@ -29,9 +29,9 @@ public class PostService {
     }
 
     @Transactional
-    public Post updatePost(PostUpdateRequest postUpdateRequest, Long postId,Long userId) {
+    public Post updatePost(PostUpdateRequest postUpdateRequest, Long postId, Long userId) {
         Post findPost = postRepository.findById(postId).orElseThrow(IllegalArgumentException::new);
-        postWriterValid(findPost.getUser().getId(),userId);
+        postWriterValid(findPost.getUser().getId(), userId);
         findPost.updatePost(postUpdateRequest.getTitle(), postUpdateRequest.getContent());
 
         return findPost;

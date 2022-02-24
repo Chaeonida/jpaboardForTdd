@@ -48,7 +48,7 @@ public class PostServiceTest {
                 .build();
 
         //when(user가 게시글을 작성하면)
-        Post savedPost = postService.savePost(postCreateRequest,user.getId());
+        Post savedPost = postService.savePost(postCreateRequest, user.getId());
 
         //then(등록이 되어야한다.)
         assertThat(savedPost.getId(), is(1L));
@@ -68,7 +68,7 @@ public class PostServiceTest {
                 .build();
 
         //when(게시글을 수정 하면)
-        Post updatedPost = postService.updatePost(postUpdateRequest, post.getId(),user.getId());
+        Post updatedPost = postService.updatePost(postUpdateRequest, post.getId(), user.getId());
 
         //then(게시글이 수정 되어야 한다.)
         assertThat(updatedPost.getContent(), is("내용수정"));

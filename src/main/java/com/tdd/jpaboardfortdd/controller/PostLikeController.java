@@ -19,7 +19,7 @@ public class PostLikeController {
             @PathVariable("id") Long userId,
             @PathVariable("id") Long postId
     ) {
-        return ResponseEntity.ok(postLikesService.savePostLike(userId,postId).getId());
+        return ResponseEntity.ok(postLikesService.savePostLike(userId, postId).getId());
     }
 
     @GetMapping("/{id}")
@@ -35,6 +35,6 @@ public class PostLikeController {
             @PathVariable("id") Long userId,
             @PathVariable("id") Long postId
     ) {
-        return ResponseEntity.ok(postLikesService.deletePostLike(userId,postId));
+        return ResponseEntity.ok(postLikesService.deletePostLike(userId, postId));
     }
 }
