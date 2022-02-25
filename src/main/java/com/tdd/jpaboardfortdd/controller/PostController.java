@@ -10,38 +10,38 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "users/{id}/posts")
+@RequestMapping(value = "users/{userId}/posts")
 public class PostController {
     private final PostService postService;
 
     @PostMapping
     public ResponseEntity<Long> create(
-            @PathVariable("id") Long userId,
+            @PathVariable("userId") Long userId,
             @RequestBody PostCreateRequest postCreateRequest
     ) {
         return ResponseEntity.ok(postService.savePost(postCreateRequest, userId).getId());
     }
 
-    @PutMapping("{id}")
+    @PutMapping("{postId}")
     public ResponseEntity<Long> update(
-            @PathVariable("id") Long userId,
-            @PathVariable("id") Long postId,
+            @PathVariable("userId") Long userId,
+            @PathVariable("postId") Long postId,
             @RequestBody PostUpdateRequest postUpdateRequest
     ) {
         return ResponseEntity.ok(postService.updatePost(postUpdateRequest, postId, userId).getId());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("{postId}")
     public ResponseEntity<Post> get(
-            @PathVariable("id") Long postId
+            @PathVariable("postId") Long postId
     ) {
         return ResponseEntity.ok(postService.getPostById(postId));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("{postId}")
     public ResponseEntity<Long> delete(
-            @PathVariable("id") Long userId,
-            @PathVariable("id") Long postId
+            @PathVariable("userId") Long userId,
+            @PathVariable("postId") Long postId
     ) {
         return ResponseEntity.ok(postService.deletePost(postId, userId));
     }

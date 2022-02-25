@@ -10,30 +10,30 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "users/{id}/posts/{id}")
+@RequestMapping(value = "users/{userId}/posts/{postId}")
 public class PostLikeController {
     private final PostLikesService postLikesService;
 
     @PostMapping
     public ResponseEntity<Long> save(
-            @PathVariable("id") Long userId,
-            @PathVariable("id") Long postId
+            @PathVariable("userId") Long userId,
+            @PathVariable("postId") Long postId
     ) {
         return ResponseEntity.ok(postLikesService.savePostLike(userId, postId).getId());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping
     public ResponseEntity<List<PostLikesResponse>> get(
-            @PathVariable("id") Long userId,
-            @PathVariable("id") Long postId
+            @PathVariable("userId") Long userId,
+            @PathVariable("postId") Long postId
     ) {
         return ResponseEntity.ok(postLikesService.getPostLikesByPostId(postId));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     public ResponseEntity<Long> delete(
-            @PathVariable("id") Long userId,
-            @PathVariable("id") Long postId
+            @PathVariable("userId") Long userId,
+            @PathVariable("postId") Long postId
     ) {
         return ResponseEntity.ok(postLikesService.deletePostLike(userId, postId));
     }

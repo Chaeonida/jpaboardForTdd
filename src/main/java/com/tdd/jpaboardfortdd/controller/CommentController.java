@@ -12,43 +12,43 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "users/{id}/posts/{id}")
+@RequestMapping(value = "users/{userId}/posts/{postId}")
 public class CommentController {
     private final CommentService commentService;
 
     @PostMapping
     public ResponseEntity<Long> createComment(
-            @PathVariable("id") Long userId,
-            @PathVariable("id") Long postId,
+            @PathVariable("userId") Long userId,
+            @PathVariable("postId") Long postId,
             @RequestBody CommentCreateRequest commentCreateRequest
     ) {
         return ResponseEntity.ok(commentService.saveComment(commentCreateRequest, postId, userId).getId());
     }
 
-    @PutMapping("{id}")
+    @PutMapping("{commentId}")
     public ResponseEntity<Long> updateComment(
-            @PathVariable("id") Long userId,
-            @PathVariable("id") Long postId,
-            @PathVariable("id") Long commentId,
+            @PathVariable("userId") Long userId,
+            @PathVariable("postId") Long postId,
+            @PathVariable("commentId") Long commentId,
             @RequestBody CommentUpdateRequest commentUpdateRequest
     ) {
         return ResponseEntity.ok(commentService.updateComment(commentUpdateRequest, commentId, userId).getId());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("{commentId}")
     public ResponseEntity<List<CommentListResponse>> get(
-            @PathVariable("id") Long userId,
-            @PathVariable("id") Long postId,
-            @PathVariable("id") Long commentId
+            @PathVariable("userId") Long userId,
+            @PathVariable("postId") Long postId,
+            @PathVariable("commentId") Long commentId
     ) {
         return ResponseEntity.ok(commentService.getCommentByPostId(postId));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{commentId}")
     public ResponseEntity<Long> delete(
-            @PathVariable("id") Long userId,
-            @PathVariable("id") Long postId,
-            @PathVariable("id") Long commentId
+            @PathVariable("userId") Long userId,
+            @PathVariable("postId") Long postId,
+            @PathVariable("commentId") Long commentId
     ) {
         return ResponseEntity.ok(commentService.deleteComment(userId, commentId));
     }
