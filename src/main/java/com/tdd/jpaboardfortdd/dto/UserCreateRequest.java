@@ -8,14 +8,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserCreateRequest {
-    private String name;
-    private String hobby;
-    private int age;
+    private String email;
+    private String password;
 
     @Builder
-    public UserCreateRequest(String name, String hobby, int age) {
-        this.name = name;
-        this.hobby = hobby;
-        this.age = age;
+    public UserCreateRequest(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 }
