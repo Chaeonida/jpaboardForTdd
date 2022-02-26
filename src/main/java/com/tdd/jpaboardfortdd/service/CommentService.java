@@ -45,11 +45,12 @@ public class CommentService {
 
     @Transactional
     public Comment updateComment(CommentUpdateRequest commentUpdateRequest, Long commentId, Long userId) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(IllegalArgumentException::new);;
+        Comment comment = commentRepository.findById(commentId).orElseThrow(IllegalArgumentException::new);
         Long compareUserId = comment.getUserId();
-        validCommentWriter(userId, compareUserId);
-        comment.update(commentUpdateRequest.getContent());
 
+        validCommentWriter(userId, compareUserId);
+
+        comment.update(commentUpdateRequest.getContent());
         return comment;
     }
 
@@ -57,13 +58,14 @@ public class CommentService {
     public Long deleteComment(Long userId, Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(IllegalArgumentException::new);
         Long compareUserId = comment.getUserId();
+
         validCommentWriter(userId, compareUserId);
 
         commentRepository.delete(comment);
         return commentId;
     }
 
-    public void validCommentWriter(final Long userId, final Long compareUserId) {
+    private void validCommentWriter(final Long userId, final Long compareUserId) {
         if (!userId.equals(compareUserId)) {
             throw new IllegalArgumentException();
         }
