@@ -48,12 +48,10 @@ public class PostLikesTest {
         Mockito.when(postLikesRepository.save(any())).thenReturn(postLike);
 
         //when(user가 게시판에 좋아요를 누르면)
-        PostLikes savedPostLikes = postLikesService.savePostLike(user.getId(), post.getId());
+        Long savedPostLikes = postLikesService.savePostLike(user.getId(), post.getId());
 
         //then(등록이 되어야한다.)
-        assertThat(savedPostLikes.getId(), is(1L));
-        assertThat(savedPostLikes.getUser().getId(), is(1L));
-        assertThat(savedPostLikes.getPost().getId(), is(1L));
+        assertThat(savedPostLikes, is(1L));
     }
 
     @Test

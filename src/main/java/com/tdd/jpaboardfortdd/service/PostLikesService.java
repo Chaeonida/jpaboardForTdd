@@ -21,15 +21,15 @@ public class PostLikesService {
     final private UserRepository userRepository;
     final private PostLikesRepository postLikesRepository;
 
-    public PostLikes savePostLike(Long userId, Long postId) {
+    public Long savePostLike(Long userId, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(IllegalArgumentException::new);
         User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
         if (postLikesRepository.existsByUserIdAndPostId(userId, postId)) {
-            deletePostLike(userId, postId);
+            return deletePostLike(userId, postId);
         }
 
         PostLikes postLikes = PostLikes.builder().user(user).post(post).build();
-        return postLikesRepository.save(postLikes);
+        return postLikesRepository.save(postLikes).getId();
     }
 
     public List<PostLikesResponse> getPostLikesByPostId(Long postId) {

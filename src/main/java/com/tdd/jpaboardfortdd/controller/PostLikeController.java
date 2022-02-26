@@ -19,7 +19,7 @@ public class PostLikeController {
             @PathVariable("userId") Long userId,
             @PathVariable("postId") Long postId
     ) {
-        return ResponseEntity.ok(postLikesService.savePostLike(userId, postId).getId());
+        return ResponseEntity.ok(postLikesService.savePostLike(userId, postId));
     }
 
     @GetMapping
