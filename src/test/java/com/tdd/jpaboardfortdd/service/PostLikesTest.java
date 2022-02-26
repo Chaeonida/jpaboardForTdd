@@ -64,7 +64,7 @@ public class PostLikesTest {
         postLikes.add(postLike);
 
         Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
-        Mockito.when(postLikesRepository.getByPost(any())).thenReturn(postLikes);
+        Mockito.when(postLikesRepository.findByPost(any())).thenReturn(postLikes);
 
         //when(좋아요를 조회하면)
         List<PostLikesResponse> postLikesResponses = postLikesService.getPostLikesByPostId(post.getId());

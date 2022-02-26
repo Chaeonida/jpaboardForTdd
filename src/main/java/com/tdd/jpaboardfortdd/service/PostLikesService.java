@@ -35,7 +35,7 @@ public class PostLikesService {
     public List<PostLikesResponse> getPostLikesByPostId(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(IllegalArgumentException::new);
 
-        return postLikesRepository.getByPost(post).stream().map(PostLikes::toPostLikesResponse).collect(toList());
+        return postLikesRepository.findByPost(post).stream().map(PostLikes::toPostLikesResponse).collect(toList());
     }
 
     public Long deletePostLike(Long userId, long postId) {
