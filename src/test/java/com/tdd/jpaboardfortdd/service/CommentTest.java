@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +41,7 @@ public class CommentTest {
 
     static User user = User.builder().id(1L).age(14).name("ChaeWon").hobby("drawing").build();
     static Post post = Post.builder().id(1L).content("아무내용").title("제목").user(user).build();
-    static Comment comment = Comment.builder().id(1L).content("댓글내용").post(post).user(user).build();
+    static Comment comment = Comment.builder().id(1L).content("댓글내용1").post(post).user(user).build();
 
     @Test
     @DisplayName("댓글 등록 테스트 ")
@@ -52,7 +52,7 @@ public class CommentTest {
         Mockito.when(commentRepository.save(any())).thenReturn(comment);
 
         CommentCreateRequest commentRequest = CommentCreateRequest.builder()
-                .content("댓글내용")
+                .content("댓글내용1")
                 .build();
 
         //when(user가 댓글을 작성하면)
@@ -62,17 +62,15 @@ public class CommentTest {
         assertThat(savedComment.getId(), is(1L));
         assertThat(savedComment.getUser().getId(), is(1L));
         assertThat(savedComment.getPost().getId(), is(1L));
-        assertThat(savedComment.getContent(), is("댓글내용"));
+        assertThat(savedComment.getContent(), is("댓글내용1"));
     }
 
     @Test
     @DisplayName("댓글 조회 테스트 ")
     void getCommentsTest() {
         //given(Post와 Post에 해당하는 댓글이 주어졌을때 )
-        List<Comment> comments = new ArrayList<>();
         Comment comment2 = Comment.builder().post(post).user(user).content("댓글내용2").build();
-        comments.add(comment);
-        comments.add(comment2);
+        List<Comment> comments = Arrays.asList(comment, comment2);
 
         Mockito.when(postRepository.findById(any())).thenReturn(Optional.of(post));
         Mockito.when(commentRepository.findByPost(any())).thenReturn(comments);
@@ -82,8 +80,11 @@ public class CommentTest {
 
         //then(조회가 되어야한다.)
         assertThat(commentListResponses.size(), is(2));
-        assertThat(commentListResponses.get(0).getContent(), is("댓글내용"));
-        assertThat(commentListResponses.get(1).getContent(), is("댓글내용2"));
+        for (int i = 0; i < commentListResponses.size(); i++) {
+            String s = "댓글내용";
+            s += String.valueOf(i + 1);
+            assertThat(commentListResponses.get(i).getContent(), is(s));
+        }
     }
 
     @Test
