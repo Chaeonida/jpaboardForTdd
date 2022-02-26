@@ -92,12 +92,11 @@ public class CommentTest {
     void updateCommentTest() {
         //given(Post와 Post에 해당하는 댓글이 주어졌을때 )
         Mockito.when(commentRepository.findById(any())).thenReturn(Optional.of(comment));
-
-        //when(user가 댓글을 수정하면)
         CommentUpdateRequest commentUpdateRequest = CommentUpdateRequest.builder()
                 .content("댓글수정")
                 .build();
 
+        //when(user가 댓글을 수정하면)
         Comment updatedComment = commentService.updateComment(commentUpdateRequest, comment.getId(), user.getId());
 
         //then(수정 되어야한다.)
@@ -110,17 +109,16 @@ public class CommentTest {
     void updateCommentFailTest() {
         //given(Post와 Post에 해당하는 댓글이 주어졌을때 )
         Mockito.when(commentRepository.findById(any())).thenReturn(Optional.empty());
-
-        //when(user가 댓글을 수정하면)
         CommentUpdateRequest commentUpdateRequest = CommentUpdateRequest.builder()
                 .content("댓글수정")
                 .build();
 
+        //when(user가 댓글을 수정하면)
         //then(댓글 작성자와 다를경우 예외가 나타난다.)
         assertThrows(IllegalArgumentException.class, () -> commentService.updateComment(
                 commentUpdateRequest,
-                comment.getId(),
-                user.getId()));
+                1L,
+                1L));
     }
 
     @Test
