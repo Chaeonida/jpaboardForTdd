@@ -20,6 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
 public class PostServiceTest {
@@ -86,10 +87,9 @@ public class PostServiceTest {
                 .build();
 
         //when(게시글을 수정 하면)
-
         //then(작성한 user와 다를경우 예외가 나타난다)
         assertThrows(IllegalArgumentException.class, () -> postService.updatePost(
-                postUpdateRequest, post.getId(), user.getId()));
+                postUpdateRequest, 1L, 1L));
     }
 
     @Test
@@ -109,11 +109,10 @@ public class PostServiceTest {
     @DisplayName("게시글 조회 실패 테스트 ")
     void findPostFailTest() {
         //given(저장 되어 있는 Post 가 주어졌을때 )
-
-        //when(게시글을 조회 하면)
         Mockito.when(postRepository.findById(any())).thenReturn(Optional.empty());
 
-        //then(게시글이 조회 되어야 한다.)
+        //when(맞지않는 아이디로 조회시)
+        //then(실해패야한다.)
         assertThrows(IllegalArgumentException.class, () -> postService.getPostById(2L));
     }
 
@@ -121,6 +120,7 @@ public class PostServiceTest {
     @DisplayName("게시글 삭제 테스트 ")
     void deletePostTest() {
         //given(저장 되어 있는 Post 가 주어졌을때 )
+        doNothing().when(postRepository).delete(any());
 
         //when(게시글을 삭제 하면)
         Long deletedPostId = postService.deletePost(post.getId(), user.getId());
