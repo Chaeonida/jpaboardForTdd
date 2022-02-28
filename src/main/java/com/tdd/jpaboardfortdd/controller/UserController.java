@@ -1,10 +1,10 @@
 package com.tdd.jpaboardfortdd.controller;
 
+import com.tdd.jpaboardfortdd.domain.User;
 import com.tdd.jpaboardfortdd.dto.UserCreateRequest;
 import com.tdd.jpaboardfortdd.dto.UserDetailResponse;
 import com.tdd.jpaboardfortdd.dto.UserSignInRequest;
 import com.tdd.jpaboardfortdd.dto.UserUpdateRequest;
-import com.tdd.jpaboardfortdd.security.JwtAuthentication;
 import com.tdd.jpaboardfortdd.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,24 +29,24 @@ public class UserController {
         return ResponseEntity.ok(userService.logIn(userSignInRequest));
     }
 
-    @PutMapping("users/{id}")
+    @PutMapping("users")
     public ResponseEntity<Long> updateUser(
-            @AuthenticationPrincipal JwtAuthentication token, @RequestBody UserUpdateRequest userUpdateRequest
+            @AuthenticationPrincipal User user, @RequestBody UserUpdateRequest userUpdateRequest
     ) {
-        return ResponseEntity.ok(userService.updateUser(userUpdateRequest, token.getId()));
+        return ResponseEntity.ok(userService.updateUser(userUpdateRequest, user.getId()));
     }
 
-    @GetMapping("users/{id}")
+    @GetMapping("users")
     public ResponseEntity<UserDetailResponse> get(
-            @PathVariable("id") Long userId
+            @AuthenticationPrincipal User user
     ) {
-        return ResponseEntity.ok(userService.getUserByUserId(userId));
+        return ResponseEntity.ok(userService.getUserByUserId(user.getId()));
     }
 
-    @DeleteMapping("users/{id}")
+    @DeleteMapping("users")
     public ResponseEntity<Long> delete(
-            @PathVariable("id") Long userId
+            @AuthenticationPrincipal User user
     ) {
-        return ResponseEntity.ok(userService.deleteUser(userId));
+        return ResponseEntity.ok(userService.deleteUser(user.getId()));
     }
 }

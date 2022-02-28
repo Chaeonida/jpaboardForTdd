@@ -37,7 +37,7 @@ public class UserService {
         if (!passwordEncoder.matches(userSignInRequest.getPassword(), member.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
-        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
+        return jwtTokenProvider.createToken(member.getId(), member.getRoles());
     }
 
     @Transactional
